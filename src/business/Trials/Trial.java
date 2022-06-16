@@ -1,0 +1,16 @@
+package business.Trials;
+
+public class Trial {
+    private String name;
+
+    public Trial(String name) {
+        this.name = name;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String trialName) {this.name = trialName;}
+}
