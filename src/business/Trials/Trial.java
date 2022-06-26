@@ -13,4 +13,10 @@ public class Trial {
     }
 
     public void setName(String trialName) {this.name = trialName;}
+
+
+
+    public void showAll() {
+        System.out.println("Trial: " + this.getName());
+    }
 }

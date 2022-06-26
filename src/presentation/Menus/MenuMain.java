@@ -51,4 +51,5 @@ public class MenuMain {
     public void spacing() {
         System.out.println();
     }
+
 }

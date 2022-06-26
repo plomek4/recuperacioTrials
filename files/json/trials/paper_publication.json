@@ -1,0 +1,10 @@
+[
+  {
+    "journalName": "Observatory Of Programming Developments",
+    "quartile": "Q2",
+    "acceptationProbability": 20,
+    "revisionProbability": 50,
+    "refuseProbability": 30,
+    "name": "Submitting to OOPD"
+  }
+]

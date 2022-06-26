@@ -1,6 +1,9 @@
 package presentation.Menus;
 
+import business.Trials.Trial;
+
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuComposer {
@@ -115,6 +118,118 @@ public class MenuComposer {
         showTabulatedMessage("x) Back");
     }
 
+    public int askPassProbability() {
+        int number;
+        while(true) {
+            number = askForInteger("Enter the credit pass probability: ");
+
+            if (number < 0 || number > 100){
+                showMessage("Value must be between 0 and 100, try again");
+            }else{
+                break;
+            }
+        }
+        return number;
+
+    }
+
+    public int askEctsNumber() {
+        int number;
+        while(true) {
+            number = askForInteger("Enter the master’s ECTS number: ");
+
+            if (number < 60 || number > 120){
+                showMessage("Value must be between 60 and 120, try again");
+            }else{
+                break;
+            }
+        }
+        return number;
+    }
+
+
+    public int askTrialType(){
+        int option;
+        do {
+            this.showCreateTrial();
+            option = this.askForInteger("Enter the trial’s type: ");
+
+        } while (option != 1 && option != 2 && option != 3 && option != 4);
+
+        return option;
+    }
+
+    public int askForBudget() {
+        int number;
+        while(true) {
+            number = askForInteger("Enter the budget amount: ");
+
+            if (number < 1000 || number > 2000000000){
+                showMessage("Budget amount must be between 1000 and 2000000000, try again");
+            }else{
+                break;
+            }
+        }
+        return number;
+    }
+
+    public int askForDifficulty() {
+        int number;
+        while(true) {
+            number = askForInteger("Enter the credit pass probability: ");
+
+            if (number < 1 || number > 10){
+                showMessage("Value must be between 0 and 100, try again");
+            }else{
+                break;
+            }
+        }
+        return number;
+    }
+
+
+    public int askPercentage(String msg) {
+        int number;
+        while(true) {
+            number = askForInteger(msg);
+
+            if (number < 1 || number > 100){
+                showMessage("Value must be between 0 and 100, try again");
+            }else{
+                break;
+            }
+        }
+        return number;
+    }
+
+
+    public String askForQuartile() {
+        String quartile;
+        while (true){
+            quartile = this.askForString("Enter the journal’s quartile: ");
+
+            if (quartile.equals("Q1") || quartile.equals("Q2") || quartile.equals("Q3") || quartile.equals("Q4")){
+                showMessage("That is not a valid quartile");
+            }else{
+                break;
+            }
+        }
+        return quartile;
+    }
+
+
+    private void showTrials(List<Trial> trials) {
+        for (int i = 0; i < trials.size(); i++){
+            showMessage("\t"+ (i + 1) + ") " + trials.get(i).getName() + "\n");
+        }
+    }
+
+
+    public int pickATrial(List<Trial> trials) {
+        showTrials(trials);
+        return askForInteger("Enter an option: ");
+
+    }
 
 
 
@@ -123,4 +238,5 @@ public class MenuComposer {
     public void showTabulatedMessage(String message) {System.out.println("\t" + message);}
     public void showMessage(String message) { System.out.println(message); }
     public void spacing() {System.out.println();}
+
 }
