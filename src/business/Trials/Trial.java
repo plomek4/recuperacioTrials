@@ -17,6 +17,6 @@ public class Trial {
 
 
     public void showAll() {
-        System.out.println("Trial: " + this.getName());
+        System.out.print("\nTrial: " + this.getName() + "\n");
     }
 }

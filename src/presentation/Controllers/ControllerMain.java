@@ -5,7 +5,7 @@ import business.Editions.EditionManager;
 import business.Trials.Trial;
 import business.Trials.TrialManager;
 import business.Trials.Types.BudgetRequest;
-import business.Trials.Types.DoctoralThesisDefense;
+import business.Trials.Types.DoctoralThesis;
 import business.Trials.Types.MasterStudies;
 import business.Trials.Types.PaperPublication;
 import presentation.Menus.MenuComposer;
@@ -179,7 +179,7 @@ public class ControllerMain {
 
                 int difficulty = menuComposer.askForDifficulty();
 
-                trial = new DoctoralThesisDefense(trialName, studyField, difficulty);
+                trial = new DoctoralThesis(trialName, studyField, difficulty);
             }
 
             //Budget request
@@ -198,31 +198,41 @@ public class ControllerMain {
         menu.showMessage("The trial was created successfully!");
     }
 
-
-
-
     private void doShowListTrials() {
         if (!this.trialManager.getTrials().isEmpty()) {
             int selected;
 
             while (true){
-                menu.showMessage("Here are the current trials, do you want to see more details or go back?\n");
-                selected = menuComposer.pickATrial(trialManager.getTrials());
+                menu.showMessage("\nHere are the current trials, do you want to see more details or go back?\n");
+                selected = menuComposer.pickATrial(trialManager.getTrials()) - 1;
 
                 if (selected < (this.trialManager.getTrials().size())) {
                     trialManager.getTrials().get(selected).showAll();
-                }else {
+
+                    if (trialManager.getTrials().get(selected) instanceof BudgetRequest) {
+                        ((BudgetRequest) trialManager.getTrials().get(selected)).showEntityName();
+                        ((BudgetRequest) trialManager.getTrials().get(selected)).showBudgetAmount();
+                    } else if (trialManager.getTrials().get(selected) instanceof DoctoralThesis) {
+                        ((DoctoralThesis) trialManager.getTrials().get(selected)).showThesisFieldOfStudy();
+                        ((DoctoralThesis) trialManager.getTrials().get(selected)).showDefenseDifficulty();
+                    } else if (trialManager.getTrials().get(selected) instanceof MasterStudies) {
+                        ((MasterStudies) trialManager.getTrials().get(selected)).showMasterName();
+                        ((MasterStudies) trialManager.getTrials().get(selected)).showMasterECTSNumber();
+                    } else {
+                        ((PaperPublication) trialManager.getTrials().get(selected)).showJournalName();
+                        ((PaperPublication) trialManager.getTrials().get(selected)).showChances();
+                    }
+
+                } else if (selected == (this.trialManager.getTrials().size())) {
                     break;
+                } else {
+                    System.out.println("\nWrong option. Enter a valid option");
                 }
-
             }
-
         } else {
             this.menu.showMessage("There are no trials");
         }
     }
-
-
 
     private void doDeleteTrial(){
         if (!this.trialManager.getTrials().isEmpty()) {
@@ -251,16 +261,6 @@ public class ControllerMain {
             this.menu.showMessage("There are not trials");
         }
     }
-
-
-
-
-
-
-
-
-
-
 
     private void runEditions() throws IOException {
         String option;

@@ -4,26 +4,43 @@ import business.Trials.Trial;
 
 public class PaperPublication extends Trial {
     private String journalName;
-    private String journalQuartile;
-    private int acceptanceProbability;
+    private String quartile;
+    private int acceptationProbability;
     private int revisionProbability;
-    private int rejectionProbability;
+    private int refuseProbability;
 
-    public PaperPublication(String name, String journalName, String journalQuartile, int acceptanceProbability,
-                            int revisionProbability, int rejectionProbability) {
+    public PaperPublication(String name, String journalName, String quartile, int acceptationProbability,
+                            int revisionProbability, int refuseProbability) {
         super(name);
         this.journalName = journalName;
-        this.journalQuartile = journalQuartile;
-        this.acceptanceProbability = acceptanceProbability;
+        this.quartile = quartile;
+        this.acceptationProbability = acceptationProbability;
         this.revisionProbability = revisionProbability;
-        this.rejectionProbability = rejectionProbability;
+        this.refuseProbability = refuseProbability;
     }
 
+    public String getJournalName() {
+        return journalName;
+    }
 
+    public int getAcceptationProbability() {
+        return acceptationProbability;
+    }
 
-    public void setJournalName(String journalName) {this.journalName = journalName;}
-    public void setJournalQuartile(String journalQuartile) {this.journalQuartile = journalQuartile;}
-    public void setAcceptanceProbability(int acceptanceProbability) {this.acceptanceProbability = acceptanceProbability;}
-    public void setRevisionProbability(int revisionProbability) {this.revisionProbability = revisionProbability;}
-    public void setRejectionProbability(int rejectionProbability) {this.rejectionProbability = rejectionProbability;}
+    public int getRevisionProbability() {
+        return revisionProbability;
+    }
+
+    public int getRefuseProbability() {
+        return refuseProbability;
+    }
+
+    public void showJournalName() {
+        System.out.print("Journal: " + this.getJournalName() + "\n");
+    }
+
+    public void showChances() {
+        System.out.print("Chances: " + this.getAcceptationProbability() + "% acceptance, "
+                + this.getRevisionProbability() + "% revision, " + this.getRefuseProbability() + "% rejection\n");
+    }
 }

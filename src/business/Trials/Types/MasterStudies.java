@@ -4,14 +4,35 @@ import business.Trials.Trial;
 
 public class MasterStudies extends Trial {
     private String masterName;
-    private int masterECTSNumber;
-    private int creditPassProbability;
+    private int creditsQuantity;
+    private int approveCreditProbability;
 
 
-    public MasterStudies(String name, String masterName, int masterECTSNumber, int creditPassProbability) {
+    public MasterStudies(String name, String masterName, int creditsQuantity, int approveCreditProbability) {
         super(name);
         this.masterName = masterName;
-        this.masterECTSNumber = masterECTSNumber;
-        this.creditPassProbability = creditPassProbability;
+        this.creditsQuantity = creditsQuantity;
+        this.approveCreditProbability = approveCreditProbability;
+    }
+
+    public String getMasterName() {
+        return masterName;
+    }
+
+    public int getCreditsQuantity() {
+        return creditsQuantity;
+    }
+
+    public int getApproveCreditProbability() {
+        return approveCreditProbability;
+    }
+
+    public void showMasterName() {
+        System.out.print("Master: " + this.getMasterName() + "\n");
+    }
+
+    public void showMasterECTSNumber() {
+        System.out.print("ECTS: " + this.getCreditsQuantity() + ", with a " + this.getApproveCreditProbability()
+                + "% chance to pass each one\n");
     }
 }

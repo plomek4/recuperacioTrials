@@ -220,14 +220,14 @@ public class MenuComposer {
 
     private void showTrials(List<Trial> trials) {
         for (int i = 0; i < trials.size(); i++){
-            showMessage("\t"+ (i + 1) + ") " + trials.get(i).getName() + "\n");
+            showMessage("\t"+ (i + 1) + ") " + trials.get(i).getName());
         }
+        showMessage("\n\t" + (trials.size() + 1) + ") Back");
     }
-
 
     public int pickATrial(List<Trial> trials) {
         showTrials(trials);
-        return askForInteger("Enter an option: ");
+        return askForInteger("\nEnter an option: ");
 
     }
 

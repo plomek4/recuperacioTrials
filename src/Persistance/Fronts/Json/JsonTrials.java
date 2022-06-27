@@ -29,19 +29,17 @@ public class JsonTrials {
 
                 for (JsonElement jsonElement : jsonArray) {
                     switch (types) {
-                        case PAPER_PUBLICATION -> trialist.add(gson.fromJson(jsonElement, PaperPublication.class));
-                        case MASTER_STUDIES -> trialist.add(gson.fromJson(jsonElement, MasterStudies.class));
-                        case DOCTORAL_THESIS_DEFENSE -> trialist.add(gson.fromJson(jsonElement, DoctoralThesisDefense.class));
-                        case BUDGET_REQUEST -> trialist.add(gson.fromJson(jsonElement, BudgetRequest.class));
+                        case paper_publication -> trialist.add(gson.fromJson(jsonElement, PaperPublication.class));
+                        case master_studies -> trialist.add(gson.fromJson(jsonElement, MasterStudies.class));
+                        case doctoral_thesis -> trialist.add(gson.fromJson(jsonElement, DoctoralThesis.class));
+                        case budget_request -> trialist.add(gson.fromJson(jsonElement, BudgetRequest.class));
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
                 new MenuMain().showMessage("File not found");
             }
         }
-
         return trialist;
     }
 }
