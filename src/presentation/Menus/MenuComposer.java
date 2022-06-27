@@ -1,5 +1,6 @@
 package presentation.Menus;
 
+import business.Editions.Edition;
 import business.Trials.Trial;
 
 import java.util.InputMismatchException;
@@ -228,10 +229,19 @@ public class MenuComposer {
     public int pickATrial(List<Trial> trials) {
         showTrials(trials);
         return askForInteger("\nEnter an option: ");
-
     }
 
+    public int pickAnEdition(List<Edition> editions) {
+        showEditions(editions);
+        return askForInteger("\nEnter an option: ");
+    }
 
+    public void showEditions(List<Edition> editions) {
+        for (int i = 0; i < editions.size(); i++){
+            showMessage("\t"+ (i + 1) + ") The Trials " + editions.get(i).getYear());
+        }
+        showMessage("\n\t" + (editions.size() + 1) + ") Back");
+    }
 
     public int askForInteger(String message) {while (true) { try {System.out.print(message);return scanner.nextInt();} catch (InputMismatchException e) {System.out.println("\nThat's not a valid integer, try again!");} finally {scanner.nextLine();}}}
     public String askForString(String message) {System.out.print(message); return scanner.nextLine();}

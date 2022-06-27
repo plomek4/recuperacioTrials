@@ -1,6 +1,9 @@
 package presentation.Menus;
 
+import business.Trials.Trial;
+
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuMain {

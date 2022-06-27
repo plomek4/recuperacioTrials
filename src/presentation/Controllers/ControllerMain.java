@@ -1,6 +1,7 @@
 package presentation.Controllers;
 
 import Persistance.SelectedPersistance;
+import business.Editions.Edition;
 import business.Editions.EditionManager;
 import business.Trials.Trial;
 import business.Trials.TrialManager;
@@ -13,6 +14,9 @@ import presentation.Menus.MenuConductor;
 import presentation.Menus.MenuMain;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class ControllerMain {
@@ -65,12 +69,10 @@ public class ControllerMain {
         } while (!Objects.equals(optionRole, EXIT));
     }
 
-
     private void persistanceToManagers() {
         this.trialManager = new TrialManager(this.selectedFaction);
         this.editionManager = new EditionManager(this.selectedFaction);
     }
-
 
     private void runRole(String optionRole) throws IOException {
         switch (optionRole){
@@ -80,9 +82,8 @@ public class ControllerMain {
         }
     }
 
-
-
     private void composerStart() throws IOException {
+        String optionRole;
         menu.showMessage("Entering management mode...");
         int option;
         do {
@@ -90,6 +91,11 @@ public class ControllerMain {
             option = menu.askForInteger("Enter an option: ");
             runManage(option);
         } while (option != 3);
+        do {
+            menu.showMenuRole();
+            optionRole = menu.askForString("Enter a role: ");
+            runRole(optionRole);
+        } while (!Objects.equals(optionRole, EXIT));
     }
 
     private void runManage(int option) throws IOException{
@@ -129,7 +135,7 @@ public class ControllerMain {
 
         typeOp = menuComposer.askTrialType();
 
-       while(true) {
+        while(true) {
             trialName = menu.askForString("Enter the trial's name: ");
 
             if (this.trialManager.isNameUnique(trialName)) {
@@ -239,7 +245,7 @@ public class ControllerMain {
             int selected;
             while (true){
                 menu.showMessage("Here are the current trials, do you want to see more details or go back?\n");
-                selected = menuComposer.pickATrial(trialManager.getTrials());
+                selected = menuComposer.pickATrial(trialManager.getTrials()) - 1;
 
                 if (selected < (trialManager.getTrials().size())) {
                     trialManager.getTrials().get(selected).showAll();
@@ -256,8 +262,7 @@ public class ControllerMain {
                     break;
                 }
             }
-
-        }else {
+        } else {
             this.menu.showMessage("There are not trials");
         }
     }
@@ -280,19 +285,89 @@ public class ControllerMain {
             case "b", "B" -> doShowListEditions();
             case "c", "C" -> doDuplicateEdition();
             case "d", "D" -> doDeleteEdition();
-            case "e", "E" -> run();
-            default -> menu.showMessage("\nWrong option. Enter 'A' 'B' 'C' or 'D'");
+            case "e", "E" -> composerStart();
+            default -> menu.showMessage("\nWrong option. Enter 'A' 'B' 'C' 'D' or 'E'");
         }
     }
 
     private void doCreateEdition() {
+        Edition edition = null;
+        int editionYear;
+        int initialNumberOfPlayers;
+        int numberOfTrials;
+        int trialsPicked = 0;
+        int trialsPickedCounter = 0;
+        List<String> pickedTrialsList = new LinkedList<>();
 
+        while(true) {
+            editionYear = menu.askForInteger("Enter the edition’s year: ");
+            if (this.editionManager.isYearUnique(editionYear)
+                    || editionYear < Calendar.getInstance().get(Calendar.YEAR)) {
+                menu.showMessage("Edition year must be unique and higher than current\n");
+            } else {
+                break;
+            }
+        }
+
+        while(true) {
+            initialNumberOfPlayers = menu.askForInteger("Enter the initial number of players: ");
+            if (initialNumberOfPlayers < 1 || initialNumberOfPlayers > 5) {
+                menu.showMessage("Initial number of players must be between 1 and 5\n");
+            } else {
+                break;
+            }
+        }
+
+        while(true) {
+            numberOfTrials = menu.askForInteger("Enter the number of trials: ");
+            if (numberOfTrials < 3 || numberOfTrials > 12) {
+                menu.showMessage("The number of trials must be between 3 and 12\n");
+            } else {
+                break;
+            }
+        }
+
+        menu.showMessage("\n\t --- Trials ---\n");
+        for (int i = 0; i < this.trialManager.getTrials().size(); i++){
+            menu.showMessage("\t"+ (i + 1) + ") " + this.trialManager.getTrials().get(i).getName());
+        }
+        menu.showMessage("");
+
+        do {
+            int selectedTrial = menu.askForInteger("Pick a trial (" + trialsPickedCounter + "/" + numberOfTrials + "): ");
+            if (selectedTrial > 0 && selectedTrial <= this.trialManager.getTrials().size()) {
+                trialsPicked++;
+                pickedTrialsList.add(this.trialManager.getTrials().get(selectedTrial).getName());
+            } else {
+                menu.showMessage("\nWrong option. Enter a valid option");
+            }
+            trialsPickedCounter++;
+        } while (trialsPicked < numberOfTrials);
+
+        editionManager.addEdition(new Edition(editionYear, initialNumberOfPlayers, numberOfTrials, pickedTrialsList));
+        menu.showMessage("\nThe edition was created successfully!");
     }
 
     private void doShowListEditions() {
         if (!this.editionManager.getEditions().isEmpty()) {
+            int selected;
 
-        }else {
+            while (true) {
+                menu.showMessage("\nHere are the current editions, do you want to see more details or go back?\n");
+                selected = menuComposer.pickAnEdition(editionManager.getEditions()) - 1;
+
+                if (selected < (this.editionManager.getEditions().size())) {
+                    editionManager.getEditions().get(selected).showAll();
+
+
+                } else if (selected == (this.editionManager.getEditions().size())) {
+                    break;
+                } else {
+                    System.out.println("\nWrong option. Enter a valid option");
+                }
+            }
+
+        } else {
             this.menu.showMessage("There are not editions");
         }
 
