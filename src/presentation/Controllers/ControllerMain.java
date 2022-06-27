@@ -334,12 +334,14 @@ public class ControllerMain {
         menu.showMessage("");
 
         do {
-            int selectedTrial = menu.askForInteger("Pick a trial (" + trialsPickedCounter + "/" + numberOfTrials + "): ");
-            if (selectedTrial > 0 && selectedTrial <= this.trialManager.getTrials().size()) {
+            int selectedTrial = menu.askForInteger("Pick a trial (" + (trialsPickedCounter + 1) + "/" + numberOfTrials + "): ");
+            selectedTrial = selectedTrial - 1;
+            if (selectedTrial > - 1 && selectedTrial <= this.trialManager.getTrials().size()) {
                 trialsPicked++;
                 pickedTrialsList.add(this.trialManager.getTrials().get(selectedTrial).getName());
             } else {
                 menu.showMessage("\nWrong option. Enter a valid option");
+                trialsPickedCounter--;
             }
             trialsPickedCounter++;
         } while (trialsPicked < numberOfTrials);
