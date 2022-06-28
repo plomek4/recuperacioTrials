@@ -475,8 +475,9 @@ public class ControllerMain {
                 menuConductor.showNewEdition();
 
                 for (int i = 0; i < this.editionManager.getEdition(menuConductor.getYear()).getPlayersQuantity(); i++){
-                    auxPlayerList.add(new Player(menu.askForString("\tEnter the player’s name (" + (i + 1) + "/"
-                            + this.editionManager.getEdition(menuConductor.getYear()).getPlayersQuantity() + "): "), 5));
+                    auxPlayerList.add(new Player(menu.askForNameNotEmpty("\tEnter the player’s name (" + (i + 1) + "/"
+                            + this.editionManager.getEdition(menuConductor.getYear()).getPlayersQuantity() + "): "),
+                            5, "Engineer"));
                 }
                 menu.showMessage("");
                 executeEdition(editionManager.getEdition(menuConductor.getYear()),
@@ -525,6 +526,7 @@ public class ControllerMain {
                 executePaperPublicationTrial((PaperPublication) trial, player);
             }
         }
+        menu.showMessage("");
     }
     private void executeBudgetRequestTrial(BudgetRequest budgetRequest, List<Player> player) {
         System.out.println("Executing budget request");
@@ -534,22 +536,45 @@ public class ControllerMain {
     private void executeDoctoralThesisTrial(DoctoralThesis doctoralThesis, Player player) {
         menu.showMessage("Executing doctoral thesis" + doctoralThesis.getName());
 
-        if (player.getInvestigationPoints() > doctoralThesis.startTrial()){
+        if (player.getInvestigationPoints() > doctoralThesis.startTrial()) {
             menu.showMessage(player.getName() + " was successful. Congrats!");
             //añadir investigation points
 
-        }else {
+        } else {
             menu.showMessage(player.getName() + " Failed");
             //quitar investigation points
         }
-
     }
 
     private void executeMasterStudiesTrial(MasterStudies masterStudies, Player player) {
-        menu.showMessage("Executing master studies: " + masterStudies.getName());
+        int credits = 0;
 
+        for (int i = 0; i < masterStudies.getCreditsQuantity(); i++) {
+            if (masterStudies.runExecution() == 1) {
+                credits++;
+            }
+        }
+        // if player has won
+        if (credits > (masterStudies.getCreditsQuantity() - credits)) {
+            if (Objects.equals(player.getRole(), "Engineer")) {
+                player.setInvestigationPoints(5);
+                player.setRole("Master");
+                menu.showMessage(player.getName() + " is now a master (with "
+                        + player.getInvestigationPoints() + " PI). ");
+            } else {
+                player.addInvestigationPoints(3);
+                menu.showMessage("\t" + player.getName() + " now has " + credits + " ECTS.");
+            }
+            menu.showMessage("\t" + player.getName() + " passed " + credits + "/"
+                    + masterStudies.getCreditsQuantity() + " ECTS. Congrats! PI count: "
+                    + player.getInvestigationPoints());
 
-
+        } else {
+            player.subtractInvestigationPoints(3);
+            menu.showMessage("\t" + player.getName() + " failed " + credits + "/"
+                    + masterStudies.getCreditsQuantity() + " ECTS. Sorry! PI count: "
+                    + player.getInvestigationPoints());
+        }
     }
 
     private void executePaperPublicationTrial(PaperPublication paperPublication, Player player) {

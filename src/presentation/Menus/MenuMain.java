@@ -47,6 +47,17 @@ public class MenuMain {
 
     public int askForInteger(String message) {while (true) { try {System.out.print(message);return scanner.nextInt();} catch (InputMismatchException e) {System.out.println("That's not a valid integer, try again!");} finally {scanner.nextLine();}}}
     public String askForString(String message) {System.out.print(message); return scanner.nextLine();}
+
+    public String askForNameNotEmpty(String message) {
+        while (true) {
+            String response = askForString(message);
+            if (response.isEmpty()) {
+                showMessage("The name cannot be empty. Please, try again.");
+            } else {
+                return response;
+            }
+        }
+    }
     public void showTabulatedMessage(String message) {
         System.out.println("\t" + message);
     }

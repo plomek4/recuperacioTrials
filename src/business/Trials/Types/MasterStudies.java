@@ -35,4 +35,14 @@ public class MasterStudies extends Trial {
         System.out.print("ECTS: " + this.getCreditsQuantity() + ", with a " + this.getApproveCreditProbability()
                 + "% chance to pass each one\n");
     }
+
+    public int runExecution() {
+        int randomNumber = (int) (Math.random() * 100);
+
+        if (randomNumber >= approveCreditProbability) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
