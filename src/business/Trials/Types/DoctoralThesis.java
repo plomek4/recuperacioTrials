@@ -27,4 +27,16 @@ public class DoctoralThesis extends Trial {
     public void showDefenseDifficulty() {
         System.out.print("Difficulty: " + this.getDefenseDifficulty() + "\n");
     }
+
+    public int startTrial(){
+        int sum = 0;
+
+        for (int i = 0; i <= defenseDifficulty; i++) {
+            sum += 2*i-1;
+        }
+
+        sum = (int) Math.sqrt(sum);
+
+        return sum;
+    }
 }

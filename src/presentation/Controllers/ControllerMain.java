@@ -534,6 +534,14 @@ public class ControllerMain {
     private void executeDoctoralThesisTrial(DoctoralThesis doctoralThesis, Player player) {
         menu.showMessage("Executing doctoral thesis" + doctoralThesis.getName());
 
+        if (player.getInvestigationPoints() > doctoralThesis.startTrial()){
+            menu.showMessage(player.getName() + " was successful. Congrats!");
+            //añadir investigation points
+
+        }else {
+            menu.showMessage(player.getName() + " Failed");
+            //quitar investigation points
+        }
 
     }
 
@@ -555,10 +563,15 @@ public class ControllerMain {
 
             if (conclusion == 1){
                 menu.showMessage("Accepted ");
+                //añadir investigation points (con QUARTILE)
+
             }else if (conclusion == 2){
                 menu.showMessage("Revision... ");
+
             }else if (conclusion == 3){
                 menu.showMessage("Rejected ");
+                //quitar investigation points (con QUARTILE)
+
             }
         }while (conclusion != 3 && conclusion != 1);
     }
