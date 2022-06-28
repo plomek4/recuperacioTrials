@@ -34,6 +34,10 @@ public class Edition {
         }
     }
 
+    public void showTitle(){
+        System.out.print("\nEdition: " + this.getYear() + "\n");
+    }
+
     public int getPlayersQuantity() {
         return playersQuantity;
     }

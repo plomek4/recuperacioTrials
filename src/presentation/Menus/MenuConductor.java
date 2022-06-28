@@ -1,5 +1,6 @@
 package presentation.Menus;
 
+import java.util.Calendar;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -20,7 +21,8 @@ public class MenuConductor {
 
     //Menú d'execució quan no hi ha edició per l'any actual
     public void showNoEditionAvailable(){
-        showMessage("No edition is defined for the current year ().");
+        int year = getYear();
+        showMessage("No edition is defined for the current year (" + year + ").");
         spacing();
         showMessage("Shutting down...");
     }
@@ -35,9 +37,8 @@ public class MenuConductor {
     }
 
 
-    //Menú quan es continua l'execució per l'any actual
-    public void showContinueEdition(){
-
+    public int getYear(){
+        return Calendar.getInstance().get(Calendar.YEAR);
     }
 
 
