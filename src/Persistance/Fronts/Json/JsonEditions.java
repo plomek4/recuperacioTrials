@@ -4,6 +4,7 @@ import business.Editions.Edition;
 import com.google.gson.*;
 import presentation.Menus.MenuMain;
 
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
@@ -39,11 +40,16 @@ public class JsonEditions {
         return editionList;
     }
 
-    public void writeEditions() {
+    public void writeEditions(List<Edition> editionList) {
+        String path = "./files/json/editions/editions.json";
         try {
-            String json = gson.toJson(getEditions());
-            Files.write(Path.of("./files/json/editions/editions.json"), json.getBytes());
+            FileWriter fileWriter = new FileWriter(path, false);
 
+            this.gson.toJson(editionList, fileWriter);
+
+            fileWriter.close();
+
+            new MenuMain().showMessage("File updated");
         } catch (Exception e) {
             e.printStackTrace();
             new MenuMain().showMessage("File not found");

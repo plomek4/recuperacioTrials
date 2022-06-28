@@ -1,7 +1,6 @@
 package presentation.Controllers;
 
 import Persistance.SelectedPersistance;
-import business.Editions.AvailableEditions;
 import business.Editions.Edition;
 import business.Editions.EditionManager;
 import business.Players.PlayerManager;
@@ -126,7 +125,10 @@ public class ControllerMain {
             case "a", "A" -> doCreateTrial();
             case "b", "B" -> doShowListTrials();
             case "c", "C" -> doDeleteTrial();
-            case "d", "D" -> composerStart();
+            case "d", "D" -> {
+                trialManager.writeTrials();
+                composerStart();
+            }
             default -> menu.showMessage("\nWrong option. Enter 'A' 'B' 'C' or 'D'");
         }
     }
@@ -230,7 +232,7 @@ public class ControllerMain {
                         ((MasterStudies) trialManager.getTrials().get(selected)).showMasterECTSNumber();
                     } else {
                         ((PaperPublication) trialManager.getTrials().get(selected)).showJournalName();
-                        ((PaperPublication) trialManager.getTrials().get(selected)).showChances();
+                        ((PaperPublication) trialManager.getTrials().get(selected)).showProbabilities();
                     }
 
                 } else if (selected == (this.trialManager.getTrials().size())) {
@@ -289,7 +291,10 @@ public class ControllerMain {
             case "b", "B" -> doShowListEditions();
             case "c", "C" -> doDuplicateEdition();
             case "d", "D" -> doDeleteEdition();
-            case "e", "E" -> composerStart();
+            case "e", "E" -> {
+                editionManager.writeEditions();
+                composerStart();
+            }
             default -> menu.showMessage("\nWrong option. Enter 'A' 'B' 'C' 'D' or 'E'");
         }
     }
@@ -381,9 +386,48 @@ public class ControllerMain {
     }
 
     private void doDuplicateEdition() {
+        int selected, playersNum, year;
+        Edition edition, e;
         if (!this.editionManager.getEditions().isEmpty()) {
-            menu.showMessage("Which edition do you want to clone?\n");
+            while (true) {
+                menu.showMessage("Which edition do you want to clone?\n");
+                selected = menuComposer.pickAnEdition(editionManager.getEditions()) - 1;
 
+                if (selected == (editionManager.getEditions().size())){
+                    break;
+                }
+
+                if (selected < (editionManager.getEditions().size())) {
+
+                    edition = editionManager.getTrialsFromEdition(selected);
+
+                    while (true) {
+                        year = menu.askForInteger("Enter the edition’s year: ");
+                        if (this.editionManager.isYearUnique(year)
+                                || year < Calendar.getInstance().get(Calendar.YEAR)) {
+                            menu.showMessage("Edition year must be unique and higher than current\n");
+                        } else {
+                            break;
+                        }
+                    }
+
+                    while (true) {
+                        playersNum = menu.askForInteger("Enter the initial number of players: ");
+                        if (playersNum < 1 || playersNum > 5) {
+                            menu.showMessage("Initial number of players must be between 1 and 5\n");
+                        } else {
+                            break;
+                        }
+                    }
+
+                    e = new Edition(year, playersNum, edition.getTrials().size(), edition.getTrials());
+                    editionManager.addEdition(e);
+                    menu.showMessage("\nThe edition was cloned successfully!");
+                    break;
+                }else {
+                    menu.showMessage("Enter a valid option\n");
+                }
+            }
         }else {
             this.menu.showMessage("There are not editions");
         }
@@ -420,31 +464,24 @@ public class ControllerMain {
 
 
 
-
     private void conductorStart() {
         boolean running = true;
         while (running) {
             menu.showMessage("Entering execution mode..\n");
-
             playerManager = new PlayerManager();
 
-            if(editionManager.areAvailableEditions(menuConductor.getYear())){
-                AvailableEditions availableEditions = editionManager.getAvailabeEditions() ;
-                playerManager.setPlayers(availableEditions.getPlayers());
-
-            }else {
-                if (editionManager.areEditions(menuConductor.getYear())){
-                    Edition edition = editionManager.getYearEdition();
-                    menu.showMessage("--- The Trials "+ menuConductor.getYear() +" ---\n");
-
-                }else{
-                    menuConductor.showNoEditionAvailable();
-                }
-            }
-            running = false;
+            if (editionManager.areEditions(menuConductor.getYear())){
+                Edition edition = editionManager.getYearEdition();
+                menu.showMessage("--- The Trials "+ menuConductor.getYear() +" ---\n");
+            }else{
+                menuConductor.showNoEditionAvailable();}
         }
+            running = false;
 
     }
+
+
+
 
 
 }

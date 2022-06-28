@@ -1,10 +1,12 @@
 package Persistance.Fronts.Json;
 
+import business.Editions.Edition;
 import business.Trials.Trial;
 import business.Trials.Types.*;
 import com.google.gson.*;
 import presentation.Menus.MenuMain;
 
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
@@ -42,4 +44,21 @@ public class JsonTrials {
         }
         return trialist;
     }
+
+    public void writeTrials(List<Trial> trialList, Types types) {
+        String path = "./files/json/trials/" + types.toString().toLowerCase() + ".json";
+        try {
+            FileWriter fileWriter = new FileWriter(path, false);
+
+            this.gson.toJson(trialList, fileWriter);
+
+            fileWriter.close();
+
+            new MenuMain().showMessage("File updated");
+        } catch (Exception e) {
+            e.printStackTrace();
+            new MenuMain().showMessage("File not found");
+        }
+    }
+
 }

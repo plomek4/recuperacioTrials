@@ -28,4 +28,8 @@ public class CsvTrials {
         }
         return trialist;
     }
+
+    public void writeTrials(List<Trial> typeOfTrials, Types types) {
+
+    }
 }

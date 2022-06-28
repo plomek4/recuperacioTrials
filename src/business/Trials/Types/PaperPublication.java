@@ -35,11 +35,13 @@ public class PaperPublication extends Trial {
         return refuseProbability;
     }
 
+    public String getQuartile(){return quartile;}
+
     public void showJournalName() {
         System.out.print("Journal: " + this.getJournalName() + "\n");
     }
 
-    public void showChances() {
+    public void showProbabilities() {
         System.out.print("Chances: " + this.getAcceptationProbability() + "% acceptance, "
                 + this.getRevisionProbability() + "% revision, " + this.getRefuseProbability() + "% rejection\n");
     }

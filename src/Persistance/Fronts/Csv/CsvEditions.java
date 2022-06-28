@@ -10,7 +10,10 @@ public class CsvEditions {
     public List<Edition> getEditions() {
         List<Edition> editionList = new LinkedList<>();
 
-
         return editionList;
+    }
+
+    public void writeEditions(List<Edition> editions) {
+
     }
 }

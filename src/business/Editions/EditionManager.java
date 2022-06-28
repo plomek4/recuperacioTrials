@@ -1,9 +1,11 @@
 package business.Editions;
 
 import Persistance.Fronts.Csv.CsvEditions;
+import Persistance.Fronts.Csv.CsvTrials;
 import Persistance.Fronts.Json.JsonEditions;
 import Persistance.SelectedPersistance;
 import business.Trials.Trial;
+import business.Trials.Types.Types;
 import presentation.Menus.MenuComposer;
 import presentation.Menus.MenuConductor;
 
@@ -15,15 +17,15 @@ import java.util.List;
 
 public class EditionManager {
     private List<Edition> editions;
-    private List<AvailableEditions> availableEditions;
-
+    private SelectedPersistance persistanceFormat;
 
     public EditionManager(SelectedPersistance format) throws IOException {
         if (format.equals(SelectedPersistance.CSV)){
+            persistanceFormat = SelectedPersistance.CSV;
             CsvEditions csvEditions = new CsvEditions();
             editions = csvEditions.getEditions();
-
         } else {
+            persistanceFormat = SelectedPersistance.JSON;
             JsonEditions jsonEditions = new JsonEditions();
             editions = jsonEditions.getEditions();
         }
@@ -40,6 +42,14 @@ public class EditionManager {
         setEditions();
     }
 
+    public void writeEditions(){
+        if (persistanceFormat.equals(SelectedPersistance.CSV)){
+            new CsvEditions().writeEditions(editions);
+        } else {
+            new JsonEditions().writeEditions(editions);
+        }
+    }
+
     public List<Edition> getEditions() {
         return editions;
     }
@@ -48,20 +58,6 @@ public class EditionManager {
         return this.editions.stream().anyMatch(edition -> edition.getYear() == trialYear);
     }
 
-
-
-    public boolean areAvailableEditions(int year) {
-        return this.availableEditions.stream().anyMatch(i -> i.getEdition().getYear() == year);
-    }
-
-    public AvailableEditions getAvailabeEditions(){
-        for(AvailableEditions e : this.availableEditions) {
-            if(e.getEdition().getYear() == new MenuConductor().getYear()){
-                return e;
-            }
-        }
-        return null;
-    }
 
 
     public boolean areEditions(int year) {
@@ -80,5 +76,10 @@ public class EditionManager {
     public void deleteEdition(int s) {
         editions.remove(s);
         setEditions();
+    }
+
+    public Edition getTrialsFromEdition(int selected) {
+        Edition e = getEditions().get(selected);
+        return e;
     }
 }

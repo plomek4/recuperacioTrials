@@ -209,7 +209,7 @@ public class MenuComposer {
         while (true){
             quartile = this.askForString("Enter the journal’s quartile: ");
 
-            if (quartile.equals("Q1") || quartile.equals("Q2") || quartile.equals("Q3") || quartile.equals("Q4")){
+            if (!quartile.equals("Q1") && !quartile.equals("Q2") && !quartile.equals("Q3") && !quartile.equals("Q4")){
                 showMessage("That is not a valid quartile");
             }else{
                 break;

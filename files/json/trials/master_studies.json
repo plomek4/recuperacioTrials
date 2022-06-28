@@ -4,5 +4,11 @@
     "creditsQuantity": 60,
     "approveCreditProbability": 40,
     "name": "Studying the MPWAR"
+  },
+  {
+    "masterName": "dada",
+    "creditsQuantity": 67,
+    "approveCreditProbability": 33,
+    "name": "dad"
   }
 ]
