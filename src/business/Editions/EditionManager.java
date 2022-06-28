@@ -4,6 +4,7 @@ import Persistance.Fronts.Csv.CsvEditions;
 import Persistance.Fronts.Csv.CsvTrials;
 import Persistance.Fronts.Json.JsonEditions;
 import Persistance.SelectedPersistance;
+import business.Players.Types.Player;
 import business.Trials.Trial;
 import business.Trials.Types.Types;
 import presentation.Menus.MenuComposer;
@@ -18,16 +19,19 @@ import java.util.List;
 public class EditionManager {
     private List<Edition> editions;
     private SelectedPersistance persistanceFormat;
+    private List<PersistedEdition> persistedEditions;
 
     public EditionManager(SelectedPersistance format) throws IOException {
         if (format.equals(SelectedPersistance.CSV)){
             persistanceFormat = SelectedPersistance.CSV;
             CsvEditions csvEditions = new CsvEditions();
             editions = csvEditions.getEditions();
+            //this.persistedEditions = csvEditions.getPersistedEditions();
         } else {
             persistanceFormat = SelectedPersistance.JSON;
             JsonEditions jsonEditions = new JsonEditions();
             editions = jsonEditions.getEditions();
+            this.persistedEditions = jsonEditions.getPersistedEditions();
         }
         this.setEditions();
 
@@ -58,7 +62,18 @@ public class EditionManager {
         return this.editions.stream().anyMatch(edition -> edition.getYear() == trialYear);
     }
 
+    public Edition getEdition(int year) {
+        for (Edition edition : this.editions) {
+            if (edition.getYear() == year) {
+                return edition;
+            }
+        }
+        return null;
+    }
 
+    public boolean isFinalTrial(Edition edition, int trial) {
+        return trial < (edition.getTrials().size() - 1);
+    }
 
     public boolean areEditions(int year) {
         return this.editions.stream().anyMatch(i -> i.getYear() == year);
@@ -81,5 +96,10 @@ public class EditionManager {
     public Edition getTrialsFromEdition(int selected) {
         Edition e = getEditions().get(selected);
         return e;
+    }
+
+    public void saveEdition(Edition edition, List<String> trials, List<Player> players) {
+        PersistedEdition persistedEdition = new PersistedEdition(edition, trials, players);
+        persistedEditions.add(persistedEdition);
     }
 }

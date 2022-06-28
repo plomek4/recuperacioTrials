@@ -54,7 +54,6 @@ public class JsonTrials {
 
             fileWriter.close();
 
-            new MenuMain().showMessage("File updated");
         } catch (Exception e) {
             e.printStackTrace();
             new MenuMain().showMessage("File not found");

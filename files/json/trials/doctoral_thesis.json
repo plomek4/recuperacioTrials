@@ -3,5 +3,10 @@
     "studyField": "Data Science",
     "defenseDifficulty": 4,
     "name": "Advances in Provably Dense Superstructures"
+  },
+  {
+    "studyField": "Science",
+    "defenseDifficulty": 45,
+    "name": "Doc"
   }
 ]

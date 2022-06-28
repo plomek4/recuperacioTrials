@@ -4,12 +4,10 @@ import Persistance.SelectedPersistance;
 import business.Editions.Edition;
 import business.Editions.EditionManager;
 import business.Players.PlayerManager;
+import business.Players.Types.Player;
 import business.Trials.Trial;
 import business.Trials.TrialManager;
-import business.Trials.Types.BudgetRequest;
-import business.Trials.Types.DoctoralThesis;
-import business.Trials.Types.MasterStudies;
-import business.Trials.Types.PaperPublication;
+import business.Trials.Types.*;
 import presentation.Menus.MenuComposer;
 import presentation.Menus.MenuConductor;
 import presentation.Menus.MenuMain;
@@ -464,27 +462,83 @@ public class ControllerMain {
 
 
 
-    private void conductorStart() {
+    private List<Player> conductorStart() {
         boolean running = true;
+        List<Player> auxPlayerList = new LinkedList<>();
         while (running) {
-            menu.showMessage("Entering execution mode..\n");
-            playerManager = new PlayerManager();
+            menuConductor.showMenuConductor();
 
-            if (editionManager.areEditions(menuConductor.getYear())){
-                Edition edition = editionManager.getYearEdition();
-                menu.showMessage("--- The Trials "+ menuConductor.getYear() +" ---\n");
-            }else{
-                menuConductor.showNoEditionAvailable();}
-        }
+
+            if (editionManager.getEdition(menuConductor.getYear()) == null) {
+                menuConductor.showNoEditionAvailable();
+            } else {
+                menuConductor.showNewEdition();
+
+                for (int i = 0; i < this.editionManager.getEdition(menuConductor.getYear()).getPlayersQuantity(); i++){
+                    auxPlayerList.add(new Player(menu.askForString("\tEnter the player’s name (" + (i + 1) + "/"
+                            + this.editionManager.getEdition(menuConductor.getYear()).getPlayersQuantity() + "): "), 5));
+                }
+                menu.showMessage("");
+                executeEdition(editionManager.getEdition(menuConductor.getYear()),
+                        editionManager.getEdition(menuConductor.getYear()).getTrials(), auxPlayerList);
+
+            }
             running = false;
+        }
+        return null;
+    }
 
+    private void executeEdition(Edition edition, List<String> trials, List<Player> players) {
+        for (int i = 0; i < trials.size(); i++) {
+            menu.showMessage("\nTrial #" + (i + 1) + " - " + trials.get(i));
+
+            Trial trial = trialManager.getTrialByName(trials.get(i));
+
+            if (trialManager.getTrialTypeByName(trials.get(i)) == Types.budget_request) {
+                executeBudgetRequestTrial((BudgetRequest) trial, players);
+            } else {
+                executeTrial(trial, players);
+            }
+
+            if (editionManager.isFinalTrial(edition, i)) {
+                if (!menuConductor.continueExecution()) {
+                    editionManager.saveEdition(edition, trials, players);
+                    break;
+                }
+            } else {
+                menu.showMessage("\nNot final trial");
+            }
+
+        }
+    }
+
+    private void executeTrial (Trial trial, List<Player> players) {
+
+        for (Player player : players) {
+            System.out.println(player.getName());
+            trialManager.getTrialTypeByName(trial.getName());
+            System.out.println(trialManager.getTrialTypeByName(trial.getName()));
+        }
+    }
+    private boolean executeBudgetRequestTrial(BudgetRequest budgetRequest, List<Player> players) {
+        System.out.println("Executing budget request");
+        return true;
+    }
+
+    private boolean executeDoctoralThesisTrial(DoctoralThesis doctoralThesis, List<Player> players) {
+        System.out.println("Executing doctoral thesis");
+        return true;
+    }
+
+    private boolean executeMasterStudiesTrial(MasterStudies masterStudies, List<Player> players) {
+        System.out.println("Executing master studies");
+        return true;
+    }
+
+    private boolean executePaperPublicationTrial(PaperPublication paperPublication, List<Player> players) {
+        System.out.println("Executing paper publication");
+        return true;
     }
 
 
-
-
-
 }
-
-
-

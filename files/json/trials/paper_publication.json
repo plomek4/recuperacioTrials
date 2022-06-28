@@ -1,5 +1,21 @@
 [
   {
+    "journalName": "er",
+    "quartile": "Q3",
+    "acceptationProbability": 45,
+    "revisionProbability": 5,
+    "refuseProbability": 50,
+    "name": "Pap"
+  },
+  {
+    "journalName": "NameOfJ",
+    "quartile": "Q2",
+    "acceptationProbability": 30,
+    "revisionProbability": 60,
+    "refuseProbability": 10,
+    "name": "PaperGuay"
+  },
+  {
     "journalName": "Observatory Of Programming Developments",
     "quartile": "Q2",
     "acceptationProbability": 20,

@@ -30,17 +30,30 @@ public class MenuConductor {
 
     //Menú quan s’inicia l’execució per l’any actual
     public void showNewEdition(){
-        showMessage("--- The business.Trials 2021 ---");
+        showMessage("--- The Trials " + getYear() + " ---");
         spacing();
-
-
     }
-
 
     public int getYear(){
         return Calendar.getInstance().get(Calendar.YEAR);
     }
 
+    public boolean continueExecution(){
+        while(true){
+            String response = this.askForString("Continue the execution? [yes/no]: ").toLowerCase();
+
+            this.spacing();
+
+            if(response.equalsIgnoreCase("yes")){
+                return true;
+            } else if(response.equalsIgnoreCase("no")){
+                return false;
+            } else {
+                showMessage("Wrong response. Please, try again.");
+                this.spacing();
+            }
+        }
+    }
 
     public int askForInteger(String message) {while (true) { try {System.out.print(message);return scanner.nextInt();} catch (InputMismatchException e) {System.out.println("That's not a valid integer, try again!");} finally {scanner.nextLine();}}}
     public String askForString(String message) {System.out.print(message); return scanner.nextLine();}

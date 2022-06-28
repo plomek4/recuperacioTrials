@@ -1,5 +1,10 @@
 [
   {
+    "entityName": "dget",
+    "budgetQuantity": 10000,
+    "name": "Bu"
+  },
+  {
     "entityName": "LSGrants",
     "budgetQuantity": 3333,
     "name": "Requesting the LSGrant for Excellence"

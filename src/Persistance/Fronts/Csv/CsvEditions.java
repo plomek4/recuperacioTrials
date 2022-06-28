@@ -1,6 +1,7 @@
 package Persistance.Fronts.Csv;
 
 import business.Editions.Edition;
+import business.Editions.PersistedEdition;
 import presentation.Menus.MenuMain;
 
 import java.io.FileWriter;

@@ -179,7 +179,7 @@ public class MenuComposer {
         while(true) {
             number = askForInteger("Enter the credit pass probability: ");
 
-            if (number < 1 || number > 10){
+            if (number < 1 || number > 100){
                 showMessage("Value must be between 0 and 100, try again");
             }else{
                 break;

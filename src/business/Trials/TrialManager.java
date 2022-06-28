@@ -81,6 +81,20 @@ public class TrialManager {
         return trials;
     }
 
+    public Trial getTrialByName(String name) {
+        for (Trial trial : trials) {
+            if (trial.getName().equals(name)) {
+                return trial;
+            }
+        }
+        return null;
+    }
+
+    // get trial type by name
+    public Types getTrialTypeByName(String name) {
+        Trial trial = getTrialByName(name);
+        return trial.getTrialType(trial);
+    }
 
     public boolean isNameUnique(String trialName) {
         return this.trials.stream().anyMatch(trial -> trial.getName().equals(trialName));
