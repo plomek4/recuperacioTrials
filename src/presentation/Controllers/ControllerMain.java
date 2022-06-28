@@ -515,11 +515,18 @@ public class ControllerMain {
     private void executeTrial (Trial trial, List<Player> players) {
 
         for (Player player : players) {
-            System.out.println(player.getName());
             trialManager.getTrialTypeByName(trial.getName());
-            System.out.println(trialManager.getTrialTypeByName(trial.getName()));
+
+            if (trialManager.getTrialTypeByName(trial.getName()) == Types.doctoral_thesis) {
+                executeDoctoralThesisTrial((DoctoralThesis) trial, players);
+            } else if (trialManager.getTrialTypeByName(trial.getName()) == Types.master_studies) {
+                executeMasterStudiesTrial((MasterStudies) trial, players);
+            } else {
+                executePaperPublicationTrial((PaperPublication) trial, players);
+            }
         }
     }
+
     private boolean executeBudgetRequestTrial(BudgetRequest budgetRequest, List<Player> players) {
         System.out.println("Executing budget request");
         return true;
