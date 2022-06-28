@@ -518,34 +518,48 @@ public class ControllerMain {
             trialManager.getTrialTypeByName(trial.getName());
 
             if (trialManager.getTrialTypeByName(trial.getName()) == Types.doctoral_thesis) {
-                executeDoctoralThesisTrial((DoctoralThesis) trial, players);
+                executeDoctoralThesisTrial((DoctoralThesis) trial, player);
             } else if (trialManager.getTrialTypeByName(trial.getName()) == Types.master_studies) {
-                executeMasterStudiesTrial((MasterStudies) trial, players);
+                executeMasterStudiesTrial((MasterStudies) trial, player);
             } else {
-                executePaperPublicationTrial((PaperPublication) trial, players);
+                executePaperPublicationTrial((PaperPublication) trial, player);
             }
         }
     }
-
-    private boolean executeBudgetRequestTrial(BudgetRequest budgetRequest, List<Player> players) {
+    private void executeBudgetRequestTrial(BudgetRequest budgetRequest, List<Player> player) {
         System.out.println("Executing budget request");
-        return true;
+
     }
 
-    private boolean executeDoctoralThesisTrial(DoctoralThesis doctoralThesis, List<Player> players) {
-        System.out.println("Executing doctoral thesis");
-        return true;
+    private void executeDoctoralThesisTrial(DoctoralThesis doctoralThesis, Player player) {
+        menu.showMessage("Executing doctoral thesis" + doctoralThesis.getName());
+
+
     }
 
-    private boolean executeMasterStudiesTrial(MasterStudies masterStudies, List<Player> players) {
-        System.out.println("Executing master studies");
-        return true;
+    private void executeMasterStudiesTrial(MasterStudies masterStudies, Player player) {
+        menu.showMessage("Executing master studies: " + masterStudies.getName());
+
+
+
     }
 
-    private boolean executePaperPublicationTrial(PaperPublication paperPublication, List<Player> players) {
-        System.out.println("Executing paper publication");
-        return true;
+    private void executePaperPublicationTrial(PaperPublication paperPublication, Player player) {
+        int conclusion;
+
+        menu.showMessage("Executing paper publication: "+ paperPublication.getName() + "\n");
+        menu.showMessage("\t" + player.getName() + " is submitting...");
+
+        do {
+            conclusion = paperPublication.startTrial();
+
+            if (conclusion == 1){
+                menu.showMessage("Accepted ");
+            }else if (conclusion == 2){
+                menu.showMessage("Revision... ");
+            }else if (conclusion == 3){
+                menu.showMessage("Rejected ");
+            }
+        }while (conclusion != 3 && conclusion != 1);
     }
-
-
 }

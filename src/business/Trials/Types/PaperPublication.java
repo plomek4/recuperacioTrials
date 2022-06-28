@@ -45,4 +45,17 @@ public class PaperPublication extends Trial {
         System.out.print("Chances: " + this.getAcceptationProbability() + "% acceptance, "
                 + this.getRevisionProbability() + "% revision, " + this.getRefuseProbability() + "% rejection\n");
     }
+
+    public int startTrial() {
+        int randomNum  = (int)(Math.random()*100+1);
+
+        if (randomNum <= acceptationProbability){
+            return 1;
+        }else if (randomNum <= (acceptationProbability + revisionProbability)){
+            return 2;
+        }
+        else{
+            return 3;
+        }
+    }
 }
