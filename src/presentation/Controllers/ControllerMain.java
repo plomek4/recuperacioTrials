@@ -513,6 +513,8 @@ public class ControllerMain {
                         if (!menuConductor.continueExecution()) {
                             editionManager.saveEdition(edition, trials, playerManager.getPlayers());
                             break;
+                        } else {
+                            editionManager.saveEdition(edition, trials, playerManager.getPlayers());
                         }
                     } else {
                         menu.showMessage("THE TRIALS " + edition.getYear() + " HAVE ENDED - PLAYERS WON");
