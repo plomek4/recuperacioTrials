@@ -97,8 +97,8 @@ public class EditionManager {
         return e;
     }
 
-    public void saveEdition(Edition edition, List<String> trials, List<Player> players) {
-        PersistedEdition persistedEdition = new PersistedEdition(edition, trials, players);
+    public void saveEdition(Edition edition, List<String> trials, List<Player> players, int nextTrialIndex) {
+        PersistedEdition persistedEdition = new PersistedEdition(edition, trials, players, nextTrialIndex);
         persistedEditions.add(persistedEdition);
     }
 

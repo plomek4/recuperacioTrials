@@ -10,10 +10,13 @@ public class PersistedEdition {
     private List<String> trials;
     private List<Player> players;
 
-    public PersistedEdition(Edition edition, List<String> trials, List<Player> players) {
+    private int nextTrialIndex;
+
+    public PersistedEdition(Edition edition, List<String> trials, List<Player> players, int nextTrialIndex) {
         this.edition = edition;
         this.trials = trials;
         this.players = players;
+        this.nextTrialIndex = nextTrialIndex;
     }
 
     public Edition getEdition() {
@@ -26,5 +29,9 @@ public class PersistedEdition {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public int getNextTrialIndex() {
+        return nextTrialIndex;
     }
 }

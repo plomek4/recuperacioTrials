@@ -433,8 +433,6 @@ public class ControllerMain {
         }
     }
 
-
-
     private void doDeleteEdition() {
         if (!this.editionManager.getEditions().isEmpty()) {
             int selected, confirmation;
@@ -462,8 +460,6 @@ public class ControllerMain {
         }
     }
 
-
-
     private List<Player> conductorStart() {
         boolean running = true;
         List<Player> auxPlayerList = new LinkedList<>();
@@ -473,7 +469,8 @@ public class ControllerMain {
             if (editionManager.existsPersistedEdition(editionManager.getEditionYear())) {
                 PersistedEdition persistedEdition = editionManager.getCurrentSavedEdition();
                 playerManager.setPlayers(persistedEdition.getPlayers());
-                executeEdition(persistedEdition.getEdition(), persistedEdition.getTrials());
+                executeEdition(persistedEdition.getEdition(), persistedEdition.getTrials(),
+                        persistedEdition.getNextTrialIndex() + 1);
             } else {
                 if (editionManager.getEdition(menuConductor.getYear()) == null) {
                     menuConductor.showNoEditionAvailable();
@@ -485,7 +482,7 @@ public class ControllerMain {
                     playerManager.setPlayers(menuConductor.askForPlayers(edition.getPlayersQuantity()));
                     menu.showMessage("");
                     executeEdition(editionManager.getEdition(menuConductor.getYear()),
-                            editionManager.getEdition(menuConductor.getYear()).getTrials());
+                            editionManager.getEdition(menuConductor.getYear()).getTrials(), 0);
                 }
             }
             running = false;
@@ -495,8 +492,9 @@ public class ControllerMain {
         return null;
     }
 
-    private void executeEdition(Edition edition, List<String> trials) {
-        for (int i = 0; i < trials.size(); i++) {
+    private void executeEdition(Edition edition, List<String> trials, int nextTrial) {
+        for (int i = nextTrial; i < trials.size(); i++) {
+
             menu.showMessage("\nTrial #" + (i + 1) + " - " + trials.get(i));
 
             if (playerManager.arePlayersStillInGame()) {
@@ -511,10 +509,10 @@ public class ControllerMain {
                 if (playerManager.arePlayersStillInGame()) {
                     if (editionManager.isFinalTrial(edition, i)) {
                         if (!menuConductor.continueExecution()) {
-                            editionManager.saveEdition(edition, trials, playerManager.getPlayers());
+                            editionManager.saveEdition(edition, trials, playerManager.getPlayers(), i);
                             break;
                         } else {
-                            editionManager.saveEdition(edition, trials, playerManager.getPlayers());
+                            editionManager.saveEdition(edition, trials, playerManager.getPlayers(), i);
                         }
                     } else {
                         menu.showMessage("THE TRIALS " + edition.getYear() + " HAVE ENDED - PLAYERS WON");

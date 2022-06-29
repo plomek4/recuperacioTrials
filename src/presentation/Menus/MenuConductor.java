@@ -42,8 +42,6 @@ public class MenuConductor {
         while(true){
             String response = this.askForString("Continue the execution? [yes/no]: ").toLowerCase();
 
-            this.spacing();
-
             if(response.equalsIgnoreCase("yes")){
                 return true;
             } else if(response.equalsIgnoreCase("no")){
