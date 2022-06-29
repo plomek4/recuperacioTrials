@@ -1,6 +1,6 @@
 package presentation.Menus;
 
-import business.Players.Types.Player;
+import business.Players.Player;
 
 import java.util.*;
 

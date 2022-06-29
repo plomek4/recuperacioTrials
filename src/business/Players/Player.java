@@ -1,4 +1,4 @@
-package business.Players.Types;
+package business.Players;
 
 public class Player {
     protected String name;

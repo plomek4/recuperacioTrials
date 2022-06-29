@@ -2,12 +2,14 @@ package Persistance.Fronts.Csv;
 
 import business.Editions.Edition;
 import business.Editions.PersistedEdition;
+import business.Players.Player;
 import presentation.Menus.MenuMain;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,4 +90,97 @@ public class CsvEditions {
     }
 
 
+
+
+
+    public List<PersistedEdition> getPersistedEditions(){
+        List<PersistedEdition> persistedEditionList = new LinkedList<>();
+
+        String path = "./files/csv/editions/persistedEditions.csv";
+
+        try {
+            String c = new String(Files.readAllBytes(Path.of(path)));
+            int i = 1,j = 0,players = 0;
+
+            Edition e = null;
+            List<Player> playersList = new LinkedList<>();
+
+            for (String row : c.split(System.lineSeparator())){
+                if (!row.isEmpty()){
+                    if (i<2){
+                        e = getList(row).get(0);
+                    }else{
+                        if (players < e.getPlayersQuantity()) {
+                            String name = "";
+                            String role = "";
+                            int campNum = 0, investigationPoints = 0;
+
+                            for (String camp : row.split(",")){
+                                switch (campNum) {
+                                    case 0 -> name = camp;
+                                    case 1 -> investigationPoints = Integer.parseInt(camp);
+                                    case 2 -> role = camp;
+                                }
+                                campNum++;
+                            }
+                            switch (role) {
+                                case "Engineer" -> playersList.add(new Player(name, investigationPoints, "Engineer"));
+                                case "Master" -> playersList.add(new Player(name, investigationPoints, "Master"));
+                                case "Doctor" -> playersList.add(new Player(name, investigationPoints, "Doctor"));
+                            }
+                            players++;
+                        }else {
+                            j = Integer.parseInt(row);
+                            i=0;
+                            persistedEditionList.add(new PersistedEdition(e, e.getTrials(), playersList, j));
+
+                        }
+                    }
+                    i++;
+                }
+            }
+
+        }catch (Exception e){
+            new MenuMain().showMessage("File not found");
+        }
+
+        return persistedEditionList;
+    }
+
+
+
+    private String persistedEditionsCsvConvert(PersistedEdition edition){
+        StringBuilder persistedEditionCsv = new StringBuilder();
+
+        persistedEditionCsv.append(csvConverter(edition.getEdition()));
+
+        for (Player player : edition.getPlayers()) {
+            persistedEditionCsv.append(",").append(player.getName()).append(",").append(player.getInvestigationPoints()).append(",").append(player.getRole());
+        }
+
+
+        persistedEditionCsv.append(edition.getNextTrialIndex());
+
+        return persistedEditionCsv.toString();
+    }
+
+
+
+    public void writePersistedEditions(List<PersistedEdition> persistedEditions) {
+        StringBuilder subject = new StringBuilder();
+
+        for (PersistedEdition e : persistedEditions) {
+            subject.append(this.persistedEditionsCsvConvert(e)).append(System.lineSeparator());
+        }
+        try {
+            FileWriter fileWriter = new FileWriter("./files/csv/editions/persistedEditions.csv");
+            fileWriter.write(subject.toString());
+            fileWriter.close();
+
+            new MenuMain().showMessage("File updated");
+        }catch (Exception e){
+            new MenuMain().showMessage("File not found");
+        }
+
+    }
 }

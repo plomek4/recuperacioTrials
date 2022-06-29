@@ -5,7 +5,7 @@ import business.Editions.Edition;
 import business.Editions.EditionManager;
 import business.Editions.PersistedEdition;
 import business.Players.PlayerManager;
-import business.Players.Types.Player;
+import business.Players.Player;
 import business.Trials.Trial;
 import business.Trials.TrialManager;
 import business.Trials.Types.*;
@@ -545,6 +545,7 @@ public class ControllerMain {
         disqualifiedPlayers.forEach(players::remove);
         menu.showMessage("");
     }
+
     private void executeBudgetRequestTrial(BudgetRequest budgetRequest, List<Player> player) {
         System.out.println("Executing budget request");
 
@@ -567,13 +568,13 @@ public class ControllerMain {
                 if (player.getInvestigationPoints() > player.getMaxPoints() && !Objects.equals(player.getRole(), "Doctor")) {
                     player.setRole(player.getNextRole());
 
-                    menu.showMessage("\t\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
+                    menu.showTabulatedMessage("\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
                             + player.getInvestigationPoints() + " IP). ");
                 }
             }
         } else {
             player.subtractInvestigationPoints(5);
-            menu.showMessage("\t" +player.getName() + " Failed" + " IP count: " + player.getInvestigationPoints());
+            menu.showTabulatedMessage(player.getName() + " Failed" + " IP count: " + player.getInvestigationPoints());
         }
     }
 

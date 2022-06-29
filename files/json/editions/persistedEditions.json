@@ -1,2 +1,89 @@
 [
+  {
+    "edition": {
+      "year": 2022,
+      "playersQuantity": 3,
+      "trialsQuantity": 3,
+      "trials": [
+        "Submitting to OOPD",
+        "Studying the MPWAR",
+        "Advances in Provably Dense Superstructures"
+      ]
+    },
+    "trials": [
+      "Submitting to OOPD",
+      "Studying the MPWAR",
+      "Advances in Provably Dense Superstructures"
+    ],
+    "players": [
+      {
+        "name": "xd",
+        "investigationPoints": 5,
+        "role": "Doctor"
+      },
+      {
+        "name": "mama",
+        "investigationPoints": 5,
+        "role": "Doctor"
+      }
+    ]
+  },
+  {
+    "edition": {
+      "year": 2022,
+      "playersQuantity": 3,
+      "trialsQuantity": 3,
+      "trials": [
+        "Submitting to OOPD",
+        "Studying the MPWAR",
+        "Advances in Provably Dense Superstructures"
+      ]
+    },
+    "trials": [
+      "Submitting to OOPD",
+      "Studying the MPWAR",
+      "Advances in Provably Dense Superstructures"
+    ],
+    "players": [
+      {
+        "name": "xd",
+        "investigationPoints": 5,
+        "role": "Doctor"
+      },
+      {
+        "name": "mama",
+        "investigationPoints": 5,
+        "role": "Doctor"
+      }
+    ]
+  },
+  {
+    "edition": {
+      "year": 2022,
+      "playersQuantity": 3,
+      "trialsQuantity": 3,
+      "trials": [
+        "Submitting to OOPD",
+        "Studying the MPWAR",
+        "Advances in Provably Dense Superstructures"
+      ]
+    },
+    "trials": [
+      "Submitting to OOPD",
+      "Studying the MPWAR",
+      "Advances in Provably Dense Superstructures"
+    ],
+    "players": [
+      {
+        "name": "xd",
+        "investigationPoints": 5,
+        "role": "Doctor"
+      },
+      {
+        "name": "mama",
+        "investigationPoints": 5,
+        "role": "Doctor"
+      }
+    ]
+  }
 ]

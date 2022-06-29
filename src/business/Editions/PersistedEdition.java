@@ -1,6 +1,6 @@
 package business.Editions;
 
-import business.Players.Types.Player;
+import business.Players.Player;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ public class PersistedEdition {
         this.players = players;
         this.nextTrialIndex = nextTrialIndex;
     }
+
 
     public Edition getEdition() {
         return edition;

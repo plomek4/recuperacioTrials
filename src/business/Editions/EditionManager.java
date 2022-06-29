@@ -1,17 +1,12 @@
 package business.Editions;
 
 import Persistance.Fronts.Csv.CsvEditions;
-import Persistance.Fronts.Csv.CsvTrials;
 import Persistance.Fronts.Json.JsonEditions;
 import Persistance.SelectedPersistance;
-import business.Players.Types.Player;
-import business.Trials.Trial;
-import business.Trials.Types.Types;
-import presentation.Menus.MenuComposer;
+import business.Players.Player;
 import presentation.Menus.MenuConductor;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
@@ -25,7 +20,7 @@ public class EditionManager {
             persistanceFormat = SelectedPersistance.CSV;
             CsvEditions csvEditions = new CsvEditions();
             editions = csvEditions.getEditions();
-            //this.persistedEditions = csvEditions.getPersistedEditions();
+            this.persistedEditions = csvEditions.getPersistedEditions();
         } else {
             persistanceFormat = SelectedPersistance.JSON;
             JsonEditions jsonEditions = new JsonEditions();
@@ -104,7 +99,7 @@ public class EditionManager {
 
     public void updatePersistedEditions(){
         if (persistanceFormat.equals(SelectedPersistance.CSV)){
-            //new CsvEditions().writeEditions(editions);
+            new CsvEditions().writePersistedEditions(persistedEditions);
         } else {
             new JsonEditions().writePersistedEditions(persistedEditions);
         }
@@ -122,7 +117,6 @@ public class EditionManager {
 
     public boolean existsPersistedEdition(int year) {
         return this.persistedEditions.stream().anyMatch(game -> game.getEdition().getYear() == year);
-
     }
 
     public int getEditionYear() {
