@@ -1,3 +1,38 @@
 [
-
+  {
+    "edition": {
+      "year": 2022,
+      "playersQuantity": 3,
+      "trialsQuantity": 3,
+      "trials": [
+        "Submitting to OOPD",
+        "Studying the MPWAR",
+        "Advances in Provably Dense Superstructures"
+      ]
+    },
+    "trials": [
+      "Submitting to OOPD",
+      "Studying the MPWAR",
+      "Advances in Provably Dense Superstructures"
+    ],
+    "players": []
+  },
+  {
+    "edition": {
+      "year": 2022,
+      "playersQuantity": 3,
+      "trialsQuantity": 3,
+      "trials": [
+        "Submitting to OOPD",
+        "Studying the MPWAR",
+        "Advances in Provably Dense Superstructures"
+      ]
+    },
+    "trials": [
+      "Submitting to OOPD",
+      "Studying the MPWAR",
+      "Advances in Provably Dense Superstructures"
+    ],
+    "players": []
+  }
 ]

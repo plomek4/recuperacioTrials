@@ -1,8 +1,8 @@
 package presentation.Menus;
 
-import java.util.Calendar;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import business.Players.Types.Player;
+
+import java.util.*;
 
 public class MenuConductor {
     private Scanner scanner;
@@ -49,10 +49,20 @@ public class MenuConductor {
             } else if(response.equalsIgnoreCase("no")){
                 return false;
             } else {
-                showMessage("Wrong response. Please, try again.");
+                showMessage("Wrong response. Please, try again with 'Yes' or 'No'.");
                 this.spacing();
             }
         }
+    }
+
+    public List<Player> askForPlayers(int iPlayers){
+        List<Player> players = new LinkedList<>();
+        for (int i = 0; i < iPlayers; i++) {
+            String name = this.askForString("Enter the player's name (" + (i + 1) + "/" + iPlayers + "): ");
+
+            players.add(new Player(name, 5, "Engineer"));
+        }
+        return players;
     }
 
     public int askForInteger(String message) {while (true) { try {System.out.print(message);return scanner.nextInt();} catch (InputMismatchException e) {System.out.println("That's not a valid integer, try again!");} finally {scanner.nextLine();}}}

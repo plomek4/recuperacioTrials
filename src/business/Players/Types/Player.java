@@ -38,4 +38,22 @@ public class Player {
     public void subtractInvestigationPoints(int investigationPoints) {
         this.investigationPoints -= investigationPoints;
     }
+
+    public int getMaxPoints() {
+        return 10;
+    }
+
+    public String getNextRole() {
+        if (this.role.equals("Engineer")) {
+            return "Master";
+        } else if (this.role.equals("Master")) {
+            return "Doctor";
+        } else {
+            return null;
+        }
+    }
+
+    public boolean isDisqualified() {
+        return this.investigationPoints <= 0;
+    }
 }

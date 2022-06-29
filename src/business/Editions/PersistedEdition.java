@@ -15,4 +15,16 @@ public class PersistedEdition {
         this.trials = trials;
         this.players = players;
     }
+
+    public Edition getEdition() {
+        return edition;
+    }
+
+    public List<String> getTrials() {
+        return trials;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
 }

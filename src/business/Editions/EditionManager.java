@@ -20,7 +20,6 @@ public class EditionManager {
     private List<Edition> editions;
     private SelectedPersistance persistanceFormat;
     private List<PersistedEdition> persistedEditions;
-
     public EditionManager(SelectedPersistance format) throws IOException {
         if (format.equals(SelectedPersistance.CSV)){
             persistanceFormat = SelectedPersistance.CSV;
@@ -101,5 +100,36 @@ public class EditionManager {
     public void saveEdition(Edition edition, List<String> trials, List<Player> players) {
         PersistedEdition persistedEdition = new PersistedEdition(edition, trials, players);
         persistedEditions.add(persistedEdition);
+    }
+
+    public void updatePersistedEditions(){
+        if (persistanceFormat.equals(SelectedPersistance.CSV)){
+            //new CsvEditions().writeEditions(editions);
+        } else {
+            new JsonEditions().writePersistedEditions(persistedEditions);
+        }
+    }
+
+    public PersistedEdition getCurrentSavedEdition() {
+        for(PersistedEdition persistedEdition : persistedEditions) {
+            if(persistedEdition.getEdition().getYear() == getEditionYear()) {
+                return persistedEdition;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean existsPersistedEdition(int year) {
+        return this.persistedEditions.stream().anyMatch(game -> game.getEdition().getYear() == year);
+
+    }
+
+    public int getEditionYear() {
+        return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    public boolean hasMoreTrials(Edition edition) {
+        return edition.getTrials().size() < edition.getTrials().size();
     }
 }

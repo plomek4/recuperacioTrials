@@ -14,4 +14,13 @@ public class PlayerManager {
     public List<Player> getPlayers() {
         return players;
     }
+
+    public boolean arePlayersStillInGame() {
+        for(Player player : this.players) {
+            if(player.getInvestigationPoints() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

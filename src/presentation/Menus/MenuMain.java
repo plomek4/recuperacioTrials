@@ -62,6 +62,8 @@ public class MenuMain {
         System.out.println("\t" + message);
     }
     public void showMessage(String message) { System.out.println(message); }
+
+    public void showMessageWithoutLN(String message) { System.out.print(message); }
     public void spacing() {
         System.out.println();
     }

@@ -3,6 +3,7 @@ package presentation.Controllers;
 import Persistance.SelectedPersistance;
 import business.Editions.Edition;
 import business.Editions.EditionManager;
+import business.Editions.PersistedEdition;
 import business.Players.PlayerManager;
 import business.Players.Types.Player;
 import business.Trials.Trial;
@@ -73,6 +74,7 @@ public class ControllerMain {
     private void persistanceToManagers() throws IOException {
         this.trialManager = new TrialManager(this.selectedFaction);
         this.editionManager = new EditionManager(this.selectedFaction);
+        this.playerManager = new PlayerManager();
     }
 
     private void runRole(String optionRole) throws IOException {
@@ -468,53 +470,55 @@ public class ControllerMain {
         while (running) {
             menuConductor.showMenuConductor();
 
-
-            if (editionManager.getEdition(menuConductor.getYear()) == null) {
-                menuConductor.showNoEditionAvailable();
+            if (editionManager.existsPersistedEdition(editionManager.getEditionYear())) {
+                PersistedEdition persistedEdition = editionManager.getCurrentSavedEdition();
+                playerManager.setPlayers(persistedEdition.getPlayers());
+                executeEdition(persistedEdition.getEdition(), persistedEdition.getTrials());
             } else {
-                menuConductor.showNewEdition();
+                if (editionManager.getEdition(menuConductor.getYear()) == null) {
+                    menuConductor.showNoEditionAvailable();
+                } else {
+                    menuConductor.showNewEdition();
 
-                for (int i = 0; i < this.editionManager.getEdition(menuConductor.getYear()).getPlayersQuantity(); i++){
-                    auxPlayerList.add(new Player(menu.askForNameNotEmpty("\tEnter the player’s name (" + (i + 1) + "/"
-                            + this.editionManager.getEdition(menuConductor.getYear()).getPlayersQuantity() + "): "),
-                            5, "Engineer"));
+                    Edition edition = editionManager.getEdition(menuConductor.getYear());
+
+                    playerManager.setPlayers(menuConductor.askForPlayers(edition.getPlayersQuantity()));
+                    menu.showMessage("");
+                    executeEdition(editionManager.getEdition(menuConductor.getYear()),
+                            editionManager.getEdition(menuConductor.getYear()).getTrials());
+
                 }
-                menu.showMessage("");
-                executeEdition(editionManager.getEdition(menuConductor.getYear()),
-                        editionManager.getEdition(menuConductor.getYear()).getTrials(), auxPlayerList);
-
             }
             running = false;
         }
+        editionManager.updatePersistedEditions();
+        menu.showMessage("\nSaving & Shutting down...");
         return null;
     }
 
-    private void executeEdition(Edition edition, List<String> trials, List<Player> players) {
+    private void executeEdition(Edition edition, List<String> trials) {
         for (int i = 0; i < trials.size(); i++) {
             menu.showMessage("\nTrial #" + (i + 1) + " - " + trials.get(i));
 
             Trial trial = trialManager.getTrialByName(trials.get(i));
 
             if (trialManager.getTrialTypeByName(trials.get(i)) == Types.budget_request) {
-                executeBudgetRequestTrial((BudgetRequest) trial, players);
+                executeBudgetRequestTrial((BudgetRequest) trial, playerManager.getPlayers());
             } else {
-                executeTrial(trial, players);
+                executeTrial(trial, playerManager.getPlayers());
             }
 
             if (editionManager.isFinalTrial(edition, i)) {
                 if (!menuConductor.continueExecution()) {
-                    editionManager.saveEdition(edition, trials, players);
+                    editionManager.saveEdition(edition, trials, playerManager.getPlayers());
                     break;
                 }
-            } else {
-                menu.showMessage("\nNot final trial");
             }
-
         }
     }
 
     private void executeTrial (Trial trial, List<Player> players) {
-
+        List<Player> disqualifiedPlayers = new LinkedList<>();
         for (Player player : players) {
             trialManager.getTrialTypeByName(trial.getName());
 
@@ -525,7 +529,16 @@ public class ControllerMain {
             } else {
                 executePaperPublicationTrial((PaperPublication) trial, player);
             }
+            // check if a player is disqualified
+            if (player.isDisqualified()) {
+                System.out.println("\t\tPlayer " + player.getName() + " is disqualified");
+                // add disqualified player to the disqualifiedPlayers list
+                disqualifiedPlayers.add(player);
+            }
+
+
         }
+        disqualifiedPlayers.forEach(players::remove);
         menu.showMessage("");
     }
     private void executeBudgetRequestTrial(BudgetRequest budgetRequest, List<Player> player) {
@@ -534,15 +547,30 @@ public class ControllerMain {
     }
 
     private void executeDoctoralThesisTrial(DoctoralThesis doctoralThesis, Player player) {
-        menu.showMessage("Executing doctoral thesis" + doctoralThesis.getName());
-
         if (player.getInvestigationPoints() > doctoralThesis.startTrial()) {
-            menu.showMessage(player.getName() + " was successful. Congrats!");
-            //añadir investigation points
+            menu.showMessage("\t" + player.getName() + " was successful. Congrats!");
+            if (Objects.equals(player.getRole(), "Master")) {
+                player.setInvestigationPoints(5);
+                player.setRole("Doctor");
+                menu.showMessage("\t\t" + player.getName() + " is now a Doctor (with "
+                        + player.getInvestigationPoints() + " IP). ");
+            } else {
+                player.addInvestigationPoints(5);
 
+                if (player.getInvestigationPoints() > player.getMaxPoints()) {
+                    player.setRole(player.getNextRole());
+                    if (player.getRole() == null) {
+                        menu.showMessage("Player " + player.getName() + " has won the game!");
+                    } else {
+                        menu.showMessage("\t\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
+                                + player.getInvestigationPoints() + " IP). ");
+                    }
+                }
+                menu.showMessage("\t" + player.getName() + " now has " + player.getInvestigationPoints() + " ECTS.");
+            }
         } else {
-            menu.showMessage(player.getName() + " Failed");
-            //quitar investigation points
+            menu.showMessage("\t" +player.getName() + " Failed");
+            player.subtractInvestigationPoints(5);
         }
     }
 
@@ -559,20 +587,32 @@ public class ControllerMain {
             if (Objects.equals(player.getRole(), "Engineer")) {
                 player.setInvestigationPoints(5);
                 player.setRole("Master");
-                menu.showMessage(player.getName() + " is now a master (with "
-                        + player.getInvestigationPoints() + " PI). ");
+                menu.showMessage("\t" + player.getName() + " passed " + credits + "/"
+                        + masterStudies.getCreditsQuantity() + " ECTS. Congrats! IP count: 10");
+                menu.showMessage("\t\t" + player.getName() + " is now a Master (with "
+                        + player.getInvestigationPoints() + " IP). ");
             } else {
                 player.addInvestigationPoints(3);
-                menu.showMessage("\t" + player.getName() + " now has " + credits + " ECTS.");
+
+                if (player.getInvestigationPoints() > player.getMaxPoints()) {
+                    player.setRole(player.getNextRole());
+                    player.setInvestigationPoints(5);
+                    if (player.getRole() == null) {
+                        menu.showMessage("Player " + player.getName() + " has won the game!");
+                    } else {
+                        menu.showMessage("\t\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
+                                + player.getInvestigationPoints() + " IP). ");
+                    }
+                }
+                menu.showMessage("\t" + player.getName() + " passed " + credits + "/"
+                        + masterStudies.getCreditsQuantity() + " ECTS. Congrats! IP count: "
+                        + player.getInvestigationPoints());
             }
-            menu.showMessage("\t" + player.getName() + " passed " + credits + "/"
-                    + masterStudies.getCreditsQuantity() + " ECTS. Congrats! PI count: "
-                    + player.getInvestigationPoints());
 
         } else {
             player.subtractInvestigationPoints(3);
             menu.showMessage("\t" + player.getName() + " failed " + credits + "/"
-                    + masterStudies.getCreditsQuantity() + " ECTS. Sorry! PI count: "
+                    + masterStudies.getCreditsQuantity() + " ECTS. Sorry! IP count: "
                     + player.getInvestigationPoints());
         }
     }
@@ -580,24 +620,50 @@ public class ControllerMain {
     private void executePaperPublicationTrial(PaperPublication paperPublication, Player player) {
         int conclusion;
 
-        menu.showMessage("Executing paper publication: "+ paperPublication.getName() + "\n");
-        menu.showMessage("\t" + player.getName() + " is submitting...");
+        menu.showMessageWithoutLN("\t" + player.getName() + " is submitting...");
 
         do {
             conclusion = paperPublication.startTrial();
 
-            if (conclusion == 1){
-                menu.showMessage("Accepted ");
-                //añadir investigation points (con QUARTILE)
+            if (conclusion == 1) {
+                if (Objects.equals(paperPublication.getQuartile(), "Q1")) {
+                    player.addInvestigationPoints(4);
+                } else if (Objects.equals(paperPublication.getQuartile(), "Q2")) {
+                    player.addInvestigationPoints(3);
+                } else if (Objects.equals(paperPublication.getQuartile(), "Q3")) {
+                    player.addInvestigationPoints(2);
+                } else {
+                    player.addInvestigationPoints(1);
+                }
+                if (player.getInvestigationPoints() > player.getMaxPoints()) {
+                    player.setRole(player.getNextRole());
+                    player.setInvestigationPoints(5);
+                    if (player.getRole() == null) {
+                        menu.showMessage("Player " + player.getName() + " has won the game!");
+                    } else {
+                        menu.showMessage("\t\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
+                                + player.getInvestigationPoints() + " IP). ");
+                    }
+                }
+                menu.showMessageWithoutLN(" Accepted! PI count: " + player.getInvestigationPoints() + "\n");
 
             }else if (conclusion == 2){
-                menu.showMessage("Revision... ");
+                menu.showMessageWithoutLN(" Revisions... ");
 
             }else if (conclusion == 3){
-                menu.showMessage("Rejected ");
-                //quitar investigation points (con QUARTILE)
+                if (Objects.equals(paperPublication.getQuartile(), "Q1")) {
+                    player.subtractInvestigationPoints(5);
+                } else if (Objects.equals(paperPublication.getQuartile(), "Q2")) {
+                    player.subtractInvestigationPoints(4);
+                } else if (Objects.equals(paperPublication.getQuartile(), "Q3")) {
+                    player.subtractInvestigationPoints(3);
+                } else {
+                    player.subtractInvestigationPoints(2);
+                }
+                menu.showMessageWithoutLN(" Rejected. PI count: " + player.getInvestigationPoints() + "\n");
+
 
             }
-        }while (conclusion != 3 && conclusion != 1);
+        } while (conclusion != 3 && conclusion != 1);
     }
 }
