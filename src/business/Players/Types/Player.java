@@ -49,7 +49,7 @@ public class Player {
         } else if (this.role.equals("Master")) {
             return "Doctor";
         } else {
-            return null;
+            return "Doctor";
         }
     }
 

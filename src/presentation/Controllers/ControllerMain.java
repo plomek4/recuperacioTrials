@@ -486,7 +486,6 @@ public class ControllerMain {
                     menu.showMessage("");
                     executeEdition(editionManager.getEdition(menuConductor.getYear()),
                             editionManager.getEdition(menuConductor.getYear()).getTrials());
-
                 }
             }
             running = false;
@@ -500,19 +499,28 @@ public class ControllerMain {
         for (int i = 0; i < trials.size(); i++) {
             menu.showMessage("\nTrial #" + (i + 1) + " - " + trials.get(i));
 
-            Trial trial = trialManager.getTrialByName(trials.get(i));
+            if (playerManager.arePlayersStillInGame()) {
+                Trial trial = trialManager.getTrialByName(trials.get(i));
 
-            if (trialManager.getTrialTypeByName(trials.get(i)) == Types.budget_request) {
-                executeBudgetRequestTrial((BudgetRequest) trial, playerManager.getPlayers());
-            } else {
-                executeTrial(trial, playerManager.getPlayers());
-            }
-
-            if (editionManager.isFinalTrial(edition, i)) {
-                if (!menuConductor.continueExecution()) {
-                    editionManager.saveEdition(edition, trials, playerManager.getPlayers());
-                    break;
+                if (trialManager.getTrialTypeByName(trials.get(i)) == Types.budget_request) {
+                    executeBudgetRequestTrial((BudgetRequest) trial, playerManager.getPlayers());
+                } else {
+                    executeTrial(trial, playerManager.getPlayers());
                 }
+
+                if (playerManager.arePlayersStillInGame()) {
+                    if (editionManager.isFinalTrial(edition, i)) {
+                        if (!menuConductor.continueExecution()) {
+                            editionManager.saveEdition(edition, trials, playerManager.getPlayers());
+                            break;
+                        }
+                    } else {
+                        menu.showMessage("THE TRIALS " + edition.getYear() + " HAVE ENDED - PLAYERS WON");
+                    }
+                }
+            } else {
+                menu.showMessage("THE TRIALS " + edition.getYear() + " HAVE ENDED - PLAYERS LOST");
+                break;
             }
         }
     }
@@ -529,14 +537,10 @@ public class ControllerMain {
             } else {
                 executePaperPublicationTrial((PaperPublication) trial, player);
             }
-            // check if a player is disqualified
             if (player.isDisqualified()) {
                 System.out.println("\t\tPlayer " + player.getName() + " is disqualified");
-                // add disqualified player to the disqualifiedPlayers list
                 disqualifiedPlayers.add(player);
             }
-
-
         }
         disqualifiedPlayers.forEach(players::remove);
         menu.showMessage("");
@@ -548,29 +552,28 @@ public class ControllerMain {
 
     private void executeDoctoralThesisTrial(DoctoralThesis doctoralThesis, Player player) {
         if (player.getInvestigationPoints() > doctoralThesis.startTrial()) {
-            menu.showMessage("\t" + player.getName() + " was successful. Congrats!");
             if (Objects.equals(player.getRole(), "Master")) {
                 player.setInvestigationPoints(5);
+                menu.showMessageWithoutLN("\t" + player.getName() + " was successful. Congrats! IP count: "
+                        + player.getInvestigationPoints());
                 player.setRole("Doctor");
                 menu.showMessage("\t\t" + player.getName() + " is now a Doctor (with "
                         + player.getInvestigationPoints() + " IP). ");
             } else {
                 player.addInvestigationPoints(5);
+                menu.showMessageWithoutLN("\t" + player.getName() + " was successful. Congrats! IP count: "
+                        + player.getInvestigationPoints());
 
-                if (player.getInvestigationPoints() > player.getMaxPoints()) {
+                if (player.getInvestigationPoints() > player.getMaxPoints() && !Objects.equals(player.getRole(), "Doctor")) {
                     player.setRole(player.getNextRole());
-                    if (player.getRole() == null) {
-                        menu.showMessage("Player " + player.getName() + " has won the game!");
-                    } else {
-                        menu.showMessage("\t\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
-                                + player.getInvestigationPoints() + " IP). ");
-                    }
+
+                    menu.showMessage("\t\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
+                            + player.getInvestigationPoints() + " IP). ");
                 }
-                menu.showMessage("\t" + player.getName() + " now has " + player.getInvestigationPoints() + " ECTS.");
             }
         } else {
-            menu.showMessage("\t" +player.getName() + " Failed");
             player.subtractInvestigationPoints(5);
+            menu.showMessage("\t" +player.getName() + " Failed" + " IP count: " + player.getInvestigationPoints());
         }
     }
 
@@ -594,21 +597,18 @@ public class ControllerMain {
             } else {
                 player.addInvestigationPoints(3);
 
-                if (player.getInvestigationPoints() > player.getMaxPoints()) {
+                if (player.getInvestigationPoints() > player.getMaxPoints() && !Objects.equals(player.getRole(), "Doctor")) {
                     player.setRole(player.getNextRole());
                     player.setInvestigationPoints(5);
-                    if (player.getRole() == null) {
-                        menu.showMessage("Player " + player.getName() + " has won the game!");
-                    } else {
-                        menu.showMessage("\t\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
-                                + player.getInvestigationPoints() + " IP). ");
-                    }
+
+                    menu.showMessage("\t\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
+                            + player.getInvestigationPoints() + " IP). ");
+
                 }
                 menu.showMessage("\t" + player.getName() + " passed " + credits + "/"
                         + masterStudies.getCreditsQuantity() + " ECTS. Congrats! IP count: "
                         + player.getInvestigationPoints());
             }
-
         } else {
             player.subtractInvestigationPoints(3);
             menu.showMessage("\t" + player.getName() + " failed " + credits + "/"
@@ -635,15 +635,12 @@ public class ControllerMain {
                 } else {
                     player.addInvestigationPoints(1);
                 }
-                if (player.getInvestigationPoints() > player.getMaxPoints()) {
+                if (player.getInvestigationPoints() > player.getMaxPoints() && !Objects.equals(player.getRole(), "Doctor")) {
                     player.setRole(player.getNextRole());
                     player.setInvestigationPoints(5);
-                    if (player.getRole() == null) {
-                        menu.showMessage("Player " + player.getName() + " has won the game!");
-                    } else {
-                        menu.showMessage("\t\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
-                                + player.getInvestigationPoints() + " IP). ");
-                    }
+                    menu.showMessage("\t\t" + player.getName() + " is now a " + player.getNextRole() + " (with "
+                            + player.getInvestigationPoints() + " IP). ");
+
                 }
                 menu.showMessageWithoutLN(" Accepted! PI count: " + player.getInvestigationPoints() + "\n");
 

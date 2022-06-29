@@ -58,7 +58,7 @@ public class MenuConductor {
     public List<Player> askForPlayers(int iPlayers){
         List<Player> players = new LinkedList<>();
         for (int i = 0; i < iPlayers; i++) {
-            String name = this.askForString("Enter the player's name (" + (i + 1) + "/" + iPlayers + "): ");
+            String name = this.askForStringNotEmpty("Enter the player's name (" + (i + 1) + "/" + iPlayers + "): ");
 
             players.add(new Player(name, 5, "Engineer"));
         }
@@ -67,6 +67,16 @@ public class MenuConductor {
 
     public int askForInteger(String message) {while (true) { try {System.out.print(message);return scanner.nextInt();} catch (InputMismatchException e) {System.out.println("That's not a valid integer, try again!");} finally {scanner.nextLine();}}}
     public String askForString(String message) {System.out.print(message); return scanner.nextLine();}
+    public String askForStringNotEmpty(String message) {
+        while (true) {
+            String response = askForString(message);
+            if (response.isEmpty()) {
+                showMessage("The name cannot be empty. Please, try again.");
+            } else {
+                return response;
+            }
+        }
+    }
     public void showTabulatedMessage(String message) {System.out.println("\t" + message);}
     public void showMessage(String message) { System.out.println(message); }
     public void spacing() {System.out.println();}

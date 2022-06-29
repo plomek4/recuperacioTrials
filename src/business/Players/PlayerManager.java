@@ -16,7 +16,7 @@ public class PlayerManager {
     }
 
     public boolean arePlayersStillInGame() {
-        for(Player player : this.players) {
+        for(Player player : players) {
             if(player.getInvestigationPoints() > 0) {
                 return true;
             }
