@@ -39,7 +39,9 @@ public class ControllerMain {
     }
 
 
-
+    /**
+     * Function that initiates the execution
+     */
     public void run() throws IOException {
         String optionFaction;
         do {
@@ -51,7 +53,11 @@ public class ControllerMain {
     }
 
 
-
+    /**
+     * Function that contains the logic to run each faction
+     * @param optionFaction the selected faction option
+     * @throws IOException
+     */
     private void runFaction(String optionFaction) throws IOException {
         String optionRole;
         switch (optionFaction) {
@@ -71,12 +77,22 @@ public class ControllerMain {
         } while (!Objects.equals(optionRole, EXIT));
     }
 
+
+    /**
+     * Function that sends the selected persistance to all 3 managers
+     * @throws IOException
+     */
     private void persistanceToManagers() throws IOException {
         this.trialManager = new TrialManager(this.selectedFaction);
         this.editionManager = new EditionManager(this.selectedFaction);
         this.playerManager = new PlayerManager();
     }
 
+    /**
+     * Function that contains the logic to run each role
+     * @param optionRole the selected role option
+     * @throws IOException
+     */
     private void runRole(String optionRole) throws IOException {
         switch (optionRole){
             case "A", "a" -> composerStart();
@@ -85,6 +101,11 @@ public class ControllerMain {
         }
     }
 
+
+    /**
+     * Function that starts the first option, the composer
+     * @throws IOException
+     */
     private void composerStart() throws IOException {
         String optionRole;
         menu.showMessage("Entering management mode...");
@@ -101,6 +122,11 @@ public class ControllerMain {
         } while (!Objects.equals(optionRole, EXIT));
     }
 
+    /**
+     * Function that executes the option selected in the management mode
+     * @param option the option selected
+     * @throws IOException
+     */
     private void runManage(int option) throws IOException{
         switch (option) {
             case 1 -> runTrials();
@@ -110,6 +136,10 @@ public class ControllerMain {
         }
     }
 
+    /**
+     * Function that contains the logic to run the tials management
+     * @throws IOException
+     */
     private void runTrials() throws IOException {
         String option;
         do {
@@ -120,6 +150,11 @@ public class ControllerMain {
         } while (!Objects.equals(option, EXIT));
     }
 
+    /**
+     * Function that executes the option selected in the trials management mode
+     * @param option the tials management mode option
+     * @throws IOException
+     */
     private void runOptionTrials(String option) throws IOException {
         switch (option) {
             case "a", "A" -> doCreateTrial();
@@ -133,7 +168,9 @@ public class ControllerMain {
         }
     }
 
-
+    /**
+     * Function that creates a new trial
+     */
     private void doCreateTrial(){
         Trial trial = null;
         String trialName, type;
@@ -210,6 +247,10 @@ public class ControllerMain {
         menu.showMessage("The trial was created successfully!");
     }
 
+
+    /**
+     * Function that shows the entire list of trials
+     */
     private void doShowListTrials() {
         if (!this.trialManager.getTrials().isEmpty()) {
             int selected;
@@ -246,6 +287,10 @@ public class ControllerMain {
         }
     }
 
+
+    /**
+     * Function that deletes an especific trial
+     */
     private void doDeleteTrial(){
         if (!this.trialManager.getTrials().isEmpty()) {
             int selected;
@@ -273,6 +318,10 @@ public class ControllerMain {
         }
     }
 
+    /**
+     * Function that contains the logic to run the editions management
+     * @throws IOException
+     */
     private void runEditions() throws IOException {
         String option;
         do {
@@ -284,7 +333,11 @@ public class ControllerMain {
 
     }
 
-
+    /**
+     * Function that executes the option selected in the edition management mode
+     * @param option the edition management mode option
+     * @throws IOException
+     */
     private void runOptionEditions(String option) throws IOException {
         switch (option) {
             case "a", "A" -> doCreateEdition();
@@ -299,6 +352,9 @@ public class ControllerMain {
         }
     }
 
+    /**
+     * Function that creates a new edition
+     */
     private void doCreateEdition() {
         Edition edition = null;
         int editionYear;
@@ -360,6 +416,9 @@ public class ControllerMain {
         menu.showMessage("\nThe edition was created successfully!");
     }
 
+    /**
+     * Function that shows the entire edition list
+     */
     private void doShowListEditions() {
         if (!this.editionManager.getEditions().isEmpty()) {
             int selected;
@@ -385,6 +444,9 @@ public class ControllerMain {
 
     }
 
+    /**
+     * Function that duplicates an existent edition changing some aspects like year and number of players
+     */
     private void doDuplicateEdition() {
         int selected, playersNum, year;
         Edition edition, e;
@@ -433,6 +495,10 @@ public class ControllerMain {
         }
     }
 
+
+    /**
+     * Funcions that deletes and especific edition chosen by the user
+     */
     private void doDeleteEdition() {
         if (!this.editionManager.getEditions().isEmpty()) {
             int selected, confirmation;
@@ -460,6 +526,10 @@ public class ControllerMain {
         }
     }
 
+    /**
+     * Function that starts the second option, the composer
+     * @return
+     */
     private List<Player> conductorStart() {
         boolean running = true;
         List<Player> auxPlayerList = new LinkedList<>();
@@ -492,6 +562,12 @@ public class ControllerMain {
         return null;
     }
 
+    /**
+     * Function that executes an edition
+     * @param edition the edition
+     * @param trials the edition's trial
+     * @param nextTrial the index for the trial
+     */
     private void executeEdition(Edition edition, List<String> trials, int nextTrial) {
         for (int i = nextTrial; i < trials.size(); i++) {
 
@@ -525,6 +601,11 @@ public class ControllerMain {
         }
     }
 
+    /**
+     * Function that executes a trial
+     * @param trial the trial
+     * @param players the players list
+     */
     private void executeTrial (Trial trial, List<Player> players) {
         List<Player> disqualifiedPlayers = new LinkedList<>();
         for (Player player : players) {
@@ -546,6 +627,11 @@ public class ControllerMain {
         menu.showMessage("");
     }
 
+    /**
+     * Function that contains the logic to execute a trial which its type is : budget request
+     * @param budgetRequest the trial's type
+     * @param player a player list
+     */
     private void executeBudgetRequestTrial(BudgetRequest budgetRequest, List<Player> player) {
         int totalIP = 0;
         boolean budgetGot = false;
@@ -573,6 +659,11 @@ public class ControllerMain {
         }
     }
 
+    /**
+     * Function that contains the logic to execute a trial which its type is : doctoral thesis
+     * @param doctoralThesis the trial's type
+     * @param player a single player
+     */
     private void executeDoctoralThesisTrial(DoctoralThesis doctoralThesis, Player player) {
         if (player.getInvestigationPoints() > doctoralThesis.startTrial()) {
             if (Objects.equals(player.getRole(), "Master")) {
@@ -600,6 +691,11 @@ public class ControllerMain {
         }
     }
 
+    /**
+     * Function that contains the logic to execute a trial which its type is : master studies
+     * @param masterStudies the trial's type
+     * @param player a single player
+     */
     private void executeMasterStudiesTrial(MasterStudies masterStudies, Player player) {
         int credits = 0;
 
@@ -640,6 +736,11 @@ public class ControllerMain {
         }
     }
 
+    /**
+     * Function that contains the logic to execute a trial which its type is : paper publication
+     * @param paperPublication the trial's type
+     * @param player a single player
+     */
     private void executePaperPublicationTrial(PaperPublication paperPublication, Player player) {
         int conclusion;
 
