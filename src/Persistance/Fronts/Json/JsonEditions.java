@@ -21,6 +21,10 @@ public class JsonEditions {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
+    /**
+     * Function that reads the "./files/json/editions/editions.json" file and saves it to a list
+     * @return the list
+     */
     public List<Edition> getEditions() {
         List<Edition> editionList = new LinkedList<>();
 
@@ -41,6 +45,10 @@ public class JsonEditions {
         return editionList;
     }
 
+    /**
+     * Function that writes an edition list to the json file
+     * @param editionList the edition list
+     */
     public void writeEditions(List<Edition> editionList) {
         String path = "./files/json/editions/editions.json";
         try {
@@ -56,6 +64,10 @@ public class JsonEditions {
         }
     }
 
+    /**
+     * Function that reads the "./files/json/editions/persistedEditions.json" file and saves it to a list
+     * @return the list
+     */
     public List<PersistedEdition> getPersistedEditions() {
         List<PersistedEdition> persistedEditions = new LinkedList<>();
 
@@ -76,6 +88,10 @@ public class JsonEditions {
         return persistedEditions;
     }
 
+    /**
+     * Function that writes a persisted edition list to the json file
+     * @param persistedEditions the persisted edition list
+     */
     public void writePersistedEditions(List<PersistedEdition> persistedEditions) {
         String path = "./files/json/editions/persistedEditions.json";
         try {

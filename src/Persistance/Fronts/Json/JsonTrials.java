@@ -19,6 +19,10 @@ public class JsonTrials {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
+    /**
+     * Function that reads the "./files/json/trials/" file ands saves it into a list
+     * @return the list of trials.
+     */
     public List<Trial> getTrials() {
         List<Trial> trialist = new LinkedList<>();
 
@@ -45,6 +49,12 @@ public class JsonTrials {
         return trialist;
     }
 
+
+    /**
+     * Function that writes a trial list to the json file depending on the trial's type
+     * @param trialList the trial list
+     * @param types the trial's type
+     */
     public void writeTrials(List<Trial> trialList, Types types) {
         String path = "./files/json/trials/" + types.toString().toLowerCase() + ".json";
         try {
@@ -59,5 +69,4 @@ public class JsonTrials {
             new MenuMain().showMessage("File not found");
         }
     }
-
 }

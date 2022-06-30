@@ -13,7 +13,10 @@ public class MenuMain {
         this.scanner = new Scanner(System.in);
     }
 
-    //4.1 Selecció de format de persistència
+
+    /**
+     * Function that displays: 4.1 Selecció de format de persistència
+     */
     public void showMainMenu() {
         spacing();
         showMessage("The IEEE needs to know where your allegiance lies.");
@@ -23,8 +26,9 @@ public class MenuMain {
         spacing();
     }
 
-
-    //4.2 Selecció de rol
+    /**
+     * Function that displays: 4.2 Selecció de rol
+     */
     public void showMenuRole() {
         spacing();
         showLogo();
@@ -36,7 +40,9 @@ public class MenuMain {
         spacing();
     }
 
-
+    /**
+     * Function that displays the logo of the program
+     */
     public void showLogo(){
         System.out.println(" ____ _           _____      _       _\n" +
                 "/__  \\ |__   ___ /__   \\_ __(_) __ _| |___\n" +
@@ -45,27 +51,41 @@ public class MenuMain {
                 "\\/   |_| |_|\\___| \\/   |_|  |_|\\__,_|_|___/\n");
     }
 
+    /**
+     * Function that asks the user an integer
+     * @param message the message
+     * @return
+     */
     public int askForInteger(String message) {while (true) { try {System.out.print(message);return scanner.nextInt();} catch (InputMismatchException e) {System.out.println("That's not a valid integer, try again!");} finally {scanner.nextLine();}}}
+
+    /**
+     * Function that asks the user a String
+     *
+     * @param message the message
+     */
     public String askForString(String message) {System.out.print(message); return scanner.nextLine();}
 
-    public String askForNameNotEmpty(String message) {
-        while (true) {
-            String response = askForString(message);
-            if (response.isEmpty()) {
-                showMessage("The name cannot be empty. Please, try again.");
-            } else {
-                return response;
-            }
-        }
-    }
-    public void showTabulatedMessage(String message) {
-        System.out.println("\t" + message);
-    }
+    /**
+     * Function that displays a message with a tabulation
+     * @param message the message
+     */
+    public void showTabulatedMessage(String message) {System.out.println("\t" + message);}
+
+    /**
+     * Function that displays a message
+     * @param message the message
+     */
     public void showMessage(String message) { System.out.println(message); }
 
+    /**
+     * Function that displays a message without a new line
+     * @param message the message
+     */
     public void showMessageWithoutLN(String message) { System.out.print(message); }
-    public void spacing() {
-        System.out.println();
-    }
+
+    /**
+     * Function that displays a new line
+     */
+    public void spacing() {System.out.println();}
 
 }

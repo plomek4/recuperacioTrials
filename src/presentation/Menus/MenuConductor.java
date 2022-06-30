@@ -11,15 +11,19 @@ public class MenuConductor {
         this.scanner = new Scanner(System.in);
     }
 
-
-    //4.4 Menú d’execució (Conductor)
+    /**
+     * Function that displays:
+     */
     public void showMenuConductor(){
         spacing();
         showMessage("Entering execution mode...");
         spacing();
     }
 
-    //Menú d'execució quan no hi ha edició per l'any actual
+
+    /**
+     * Function that displays: Menú d'execució quan no hi ha edició per l'any actual
+     */
     public void showNoEditionAvailable(){
         int year = getYear();
         showMessage("No edition is defined for the current year (" + year + ").");
@@ -28,16 +32,26 @@ public class MenuConductor {
     }
 
 
-    //Menú quan s’inicia l’execució per l’any actual
+    /**
+     * Function that displays: Menú quan s’inicia l’execució per l’any actual
+     */
     public void showNewEdition(){
         showMessage("--- The Trials " + getYear() + " ---");
         spacing();
     }
 
+    /**
+     * Function that gets the current devive year
+     * @return
+     */
     public int getYear(){
         return Calendar.getInstance().get(Calendar.YEAR);
     }
 
+    /**
+     * Function that asks the user if he wants to continue the execution
+     * @return the result
+     */
     public boolean continueExecution(){
         while(true){
             String response = this.askForString("Continue the execution? [yes/no]: ").toLowerCase();
@@ -53,6 +67,11 @@ public class MenuConductor {
         }
     }
 
+    /**
+     * Function that asks the user to name different players
+     * @param iPlayers the number of players
+     * @return the player list
+     */
     public List<Player> askForPlayers(int iPlayers){
         List<Player> players = new LinkedList<>();
         for (int i = 0; i < iPlayers; i++) {
@@ -63,8 +82,18 @@ public class MenuConductor {
         return players;
     }
 
-    public int askForInteger(String message) {while (true) { try {System.out.print(message);return scanner.nextInt();} catch (InputMismatchException e) {System.out.println("That's not a valid integer, try again!");} finally {scanner.nextLine();}}}
+    /**
+     * Function that asks the user a String
+     *
+     * @param message the message
+     */
     public String askForString(String message) {System.out.print(message); return scanner.nextLine();}
+
+    /**
+     * Function that asks the user a String that can't be empty
+     *
+     * @param message the message
+     */
     public String askForStringNotEmpty(String message) {
         while (true) {
             String response = askForString(message);
@@ -75,7 +104,15 @@ public class MenuConductor {
             }
         }
     }
-    public void showTabulatedMessage(String message) {System.out.println("\t" + message);}
+
+    /**
+     * Function that displays a message
+     * @param message the message
+     */
     public void showMessage(String message) { System.out.println(message); }
+
+    /**
+     * Function that displays a new line
+     */
     public void spacing() {System.out.println();}
 }

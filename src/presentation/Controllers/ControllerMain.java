@@ -570,7 +570,6 @@ public class ControllerMain {
                 p.subtractInvestigationPoints(2);
                 menu.showTabulatedMessage(p.getName() + " failed. PI count: " + p.getInvestigationPoints());
             }
-
         }
     }
 
@@ -682,7 +681,6 @@ public class ControllerMain {
                     player.subtractInvestigationPoints(2);
                 }
                 menu.showMessageWithoutLN(" Rejected. PI count: " + player.getInvestigationPoints() + "\n");
-
 
             }
         } while (conclusion != 3 && conclusion != 1);

@@ -6,15 +6,17 @@ import business.Players.Player;
 import presentation.Menus.MenuMain;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
 public class CsvEditions {
 
+    /**
+     * Function that reads the "./files/csv/editions/editions.csv" file and saves it in a list
+     * @return the edition list
+     */
     public List<Edition> getEditions() {
         List<Edition> editionList = new LinkedList<>();
 
@@ -30,6 +32,11 @@ public class CsvEditions {
         return editionList;
     }
 
+    /**
+     * Function that gets the list from the function that red the file
+     * @param c
+     * @return the edition list
+     */
     private List<Edition> getList(String c) {
         List<Edition> editions = new LinkedList<>();
 
@@ -58,6 +65,10 @@ public class CsvEditions {
     }
 
 
+    /**
+     * Function that writes an edition list to the csv file
+     * @param editions the edition list
+     */
     public void writeEditions(List<Edition> editions) {
         StringBuilder subject = new StringBuilder();
 
@@ -75,6 +86,11 @@ public class CsvEditions {
         }
     }
 
+    /**
+     * Function that converts an edition list to csv
+     * @param edition edition in question
+     * @return the appended edition to csv
+     */
     private String csvConverter(Edition edition){
         StringBuilder editionCsv = new StringBuilder();
 
@@ -90,9 +106,10 @@ public class CsvEditions {
     }
 
 
-
-
-
+    /**
+     * Function that reads the "./files/csv/editions/persistedEditions.csv" file and saves it in a list
+     * @return the persisted edition list
+     */
     public List<PersistedEdition> getPersistedEditions(){
         List<PersistedEdition> persistedEditionList = new LinkedList<>();
 
@@ -148,7 +165,11 @@ public class CsvEditions {
     }
 
 
-
+    /**
+     * Function that converts a persisted edition list to csv
+     * @param edition the persisted edition in question
+     * @return the appended persisted edition to csv
+     */
     private String persistedEditionsCsvConvert(PersistedEdition edition){
         StringBuilder persistedEditionCsv = new StringBuilder();
 
@@ -165,7 +186,10 @@ public class CsvEditions {
     }
 
 
-
+    /**
+     * Function that writes a persisted edition list to the csv file
+     * @param persistedEditions the persisted edition list
+     */
     public void writePersistedEditions(List<PersistedEdition> persistedEditions) {
         StringBuilder subject = new StringBuilder();
 

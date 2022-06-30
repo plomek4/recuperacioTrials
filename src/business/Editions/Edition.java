@@ -7,20 +7,25 @@ import java.util.List;
 public class Edition {
     private int year;
     private int playersQuantity;
-    private int trialsQuantity;
     private List<String> trials;
 
     public Edition(int year, int playersQuantity, int trialsQuantity, List<String> trials) {
         this.year = year;
         this.playersQuantity = playersQuantity;
-        this.trialsQuantity = trialsQuantity;
         this.trials = trials;
     }
 
+    /**
+     * Getter of the year of the  year.
+     * @return Year of the edition.
+     */
     public int getYear() {
         return year;
     }
 
+    /**
+     * Function that displays all the information related ro the edition
+     */
     public void showAll() {
         int i = 1;
 
@@ -34,18 +39,25 @@ public class Edition {
         }
     }
 
+    /**
+     * Function that displays the title an edition
+     */
     public void showTitle(){
         System.out.print("\nEdition: " + this.getYear() + "\n");
     }
 
+    /**
+     * Getter of the number of players
+     * @return the number of players
+     */
     public int getPlayersQuantity() {
         return playersQuantity;
     }
 
-    public int getTrialsQuantity() {
-        return trialsQuantity;
-    }
-
+    /**
+     * Getter of the edition's trials
+     * @return the trial list
+     */
     public List<String> getTrials() {
         return trials;
     }

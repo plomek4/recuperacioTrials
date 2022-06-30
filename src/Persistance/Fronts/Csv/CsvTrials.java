@@ -13,6 +13,11 @@ import java.util.List;
 
                                 //TODO : leer trials + pasarlas a CSV + escribirlas
 public class CsvTrials {
+
+    /**
+     * Function that reads the "./files/csv/trials/" file and saves it in a list
+     * @return the tial list
+     */
     public List<Trial> getTrials() {
         List<Trial> trialist = new LinkedList<>();
 
@@ -102,6 +107,12 @@ public class CsvTrials {
         return trialist;
     }
 
+    /**
+     * Function that converts a trial list to csv
+     * @param trial the trial list
+     * @param types the trial's type
+     * @return the appended trial to csv
+     */
     private String csvConverter(Trial trial, Types types){
         StringBuilder trialCsv = new StringBuilder();
         trialCsv.append(trial.getName());
@@ -131,6 +142,12 @@ public class CsvTrials {
         return trialCsv.toString();
     }
 
+
+    /**
+     * Function that writes a trial list to the csv file
+     * @param trials the trial list
+     * @param types the trial's type
+     */
     public void writeTrials(List<Trial> trials, Types types) {
         StringBuilder subject = new StringBuilder();
 

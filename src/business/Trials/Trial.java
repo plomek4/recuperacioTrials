@@ -11,22 +11,33 @@ public class Trial {
         this.name = name;
     }
 
-
+    /**
+     * Getter of the trial's name
+     * @return the trial's name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Setter of the trial's name
+     * @param trialName the name of the trial
+     */
     public void setName(String trialName) {this.name = trialName;}
 
-
-
+    /**
+     * Function that displays the Trials title
+     */
     public void showAll() {
         System.out.print("\nTrial: " + this.getName() + "\n");
     }
 
-    // get trial type instance of classes
+    /**
+     * Function that gets which type of trial is it
+     * @param trial the trial in question
+     * @return the trial's type
+     */
     public Types getTrialType(Trial trial) {
-
         if (trial instanceof BudgetRequest) {
             return Types.budget_request;
         } else if (trial instanceof MasterStudies) {
@@ -38,7 +49,5 @@ public class Trial {
         } else {
             return null;
         }
-
     }
-
 }
