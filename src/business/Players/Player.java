@@ -1,6 +1,6 @@
 package business.Players;
 
-public class Player {
+public class Player{
     protected String name;
     protected int investigationPoints;
     protected String role;

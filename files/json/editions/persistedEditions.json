@@ -7,26 +7,34 @@
       "trials": [
         "Submitting to OOPD",
         "Studying the MPWAR",
-        "Advances in Provably Dense Superstructures"
+        "Advances in Provably Dense Superstructures",
+        "Requesting the LSGrant for Excellence"
       ]
     },
     "trials": [
       "Submitting to OOPD",
       "Studying the MPWAR",
-      "Advances in Provably Dense Superstructures"
+      "Advances in Provably Dense Superstructures",
+      "Requesting the LSGrant for Excellence"
     ],
     "players": [
       {
-        "name": "xd",
-        "investigationPoints": 5,
+        "name": "Rindo",
+        "investigationPoints": 7,
         "role": "Doctor"
       },
       {
-        "name": "mama",
-        "investigationPoints": 5,
+        "name": "Goku",
+        "investigationPoints": 7,
         "role": "Doctor"
+      },
+      {
+        "name": "Manin",
+        "investigationPoints": 15,
+        "role": "Engineer"
       }
-    ]
+    ],
+    "nextTrialIndex": 0
   },
   {
     "edition": {
@@ -36,26 +44,34 @@
       "trials": [
         "Submitting to OOPD",
         "Studying the MPWAR",
-        "Advances in Provably Dense Superstructures"
+        "Advances in Provably Dense Superstructures",
+        "Requesting the LSGrant for Excellence"
       ]
     },
     "trials": [
       "Submitting to OOPD",
       "Studying the MPWAR",
-      "Advances in Provably Dense Superstructures"
+      "Advances in Provably Dense Superstructures",
+      "Requesting the LSGrant for Excellence"
     ],
     "players": [
       {
-        "name": "xd",
-        "investigationPoints": 5,
+        "name": "Rindo",
+        "investigationPoints": 7,
         "role": "Doctor"
       },
       {
-        "name": "mama",
-        "investigationPoints": 5,
+        "name": "Goku",
+        "investigationPoints": 7,
         "role": "Doctor"
+      },
+      {
+        "name": "Manin",
+        "investigationPoints": 15,
+        "role": "Engineer"
       }
-    ]
+    ],
+    "nextTrialIndex": 1
   },
   {
     "edition": {
@@ -65,25 +81,33 @@
       "trials": [
         "Submitting to OOPD",
         "Studying the MPWAR",
-        "Advances in Provably Dense Superstructures"
+        "Advances in Provably Dense Superstructures",
+        "Requesting the LSGrant for Excellence"
       ]
     },
     "trials": [
       "Submitting to OOPD",
       "Studying the MPWAR",
-      "Advances in Provably Dense Superstructures"
+      "Advances in Provably Dense Superstructures",
+      "Requesting the LSGrant for Excellence"
     ],
     "players": [
       {
-        "name": "xd",
-        "investigationPoints": 5,
+        "name": "Rindo",
+        "investigationPoints": 7,
         "role": "Doctor"
       },
       {
-        "name": "mama",
-        "investigationPoints": 5,
+        "name": "Goku",
+        "investigationPoints": 7,
         "role": "Doctor"
+      },
+      {
+        "name": "Manin",
+        "investigationPoints": 15,
+        "role": "Engineer"
       }
-    ]
+    ],
+    "nextTrialIndex": 2
   }
 ]

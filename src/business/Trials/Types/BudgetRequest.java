@@ -1,5 +1,6 @@
 package business.Trials.Types;
 
+import business.Players.Player;
 import business.Trials.Trial;
 
 public class BudgetRequest extends Trial {
@@ -27,5 +28,13 @@ public class BudgetRequest extends Trial {
 
     public void showBudgetAmount() {
         System.out.print("Budget: " + this.getBudgetQuantity() + " €\n");
+    }
+
+    public int startTrial() {
+        return (int) (Math.log(getBudgetQuantity()) / Math.log(2));
+    }
+
+    public float IPReward(Player p) {
+        return (float) Math.ceil(p.getInvestigationPoints() / 2);
     }
 }

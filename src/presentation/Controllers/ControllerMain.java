@@ -515,11 +515,11 @@ public class ControllerMain {
                             editionManager.saveEdition(edition, trials, playerManager.getPlayers(), i);
                         }
                     } else {
-                        menu.showMessage("THE TRIALS " + edition.getYear() + " HAVE ENDED - PLAYERS WON");
+                        menu.showMessage("\nTHE TRIALS " + edition.getYear() + " HAVE ENDED - PLAYERS WON");
                     }
                 }
             } else {
-                menu.showMessage("THE TRIALS " + edition.getYear() + " HAVE ENDED - PLAYERS LOST");
+                menu.showMessage("\nTHE TRIALS " + edition.getYear() + " HAVE ENDED - PLAYERS LOST");
                 break;
             }
         }
@@ -547,8 +547,31 @@ public class ControllerMain {
     }
 
     private void executeBudgetRequestTrial(BudgetRequest budgetRequest, List<Player> player) {
-        System.out.println("Executing budget request");
+        int totalIP = 0;
+        boolean budgetGot = false;
 
+        for (Player p : player){
+            totalIP += p.getInvestigationPoints();
+        }
+
+        if (totalIP < budgetRequest.startTrial()){
+            menu.showMessage("The research group failed the budget\n");
+        }else {
+            menu.showMessage("The research group got the budget\n");
+            budgetGot = true;
+        }
+
+        for (Player p : player){
+            if (budgetGot){
+                float reward = budgetRequest.IPReward(p);
+                p.addInvestigationPoints((int) reward);
+                menu.showTabulatedMessage(p.getName() + " was successful. Congrats! PI count: " + p.getInvestigationPoints());
+            }else {
+                p.subtractInvestigationPoints(2);
+                menu.showTabulatedMessage(p.getName() + " failed. PI count: " + p.getInvestigationPoints());
+            }
+
+        }
     }
 
     private void executeDoctoralThesisTrial(DoctoralThesis doctoralThesis, Player player) {
@@ -558,7 +581,7 @@ public class ControllerMain {
                 menu.showMessageWithoutLN("\t" + player.getName() + " was successful. Congrats! IP count: "
                         + player.getInvestigationPoints());
                 player.setRole("Doctor");
-                menu.showMessage("\t\t" + player.getName() + " is now a Doctor (with "
+                menu.showTabulatedMessage("\t" + player.getName() + " is now a Doctor (with "
                         + player.getInvestigationPoints() + " IP). ");
             } else {
                 player.addInvestigationPoints(5);
